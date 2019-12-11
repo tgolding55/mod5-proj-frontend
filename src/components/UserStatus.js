@@ -15,7 +15,7 @@ const UserStatus = ({ setUser, setSelectedPage, user }) => {
           >
             Log out
           </Button>
-          {user.github_name ? (
+          {user.github_linked ? (
             <Label>Github Linked</Label>
           ) : (
             <Button href="http://localhost:3001/auth/github">

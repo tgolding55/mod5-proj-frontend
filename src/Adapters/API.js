@@ -1,8 +1,9 @@
 const API_ENDPOINT = "http://localhost:3001/api/v1/";
-const SIGNUP_ENDPOINT = API_ENDPOINT + "users";
+const USERS_ENDPOINT = API_ENDPOINT + "users";
 const LOGIN_ENDPOINT = API_ENDPOINT + "login";
 const VALIDATE_ENDPOINT = API_ENDPOINT + "validate";
 const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
+const PROJECTS_ENDPOINT = API_ENDPOINT + "projects";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -33,7 +34,7 @@ const login = userDetails =>
     .then(handleUserResp);
 
 const signup = userDetails =>
-  fetch(SIGNUP_ENDPOINT, configObj("POST", { user: userDetails }))
+  fetch(USERS_ENDPOINT, configObj("POST", { user: userDetails }))
     .then(jsonify)
     .then(handleUserResp);
 
@@ -56,9 +57,18 @@ const githubAuth = access_token =>
     .then(jsonify)
     .then(handleUserResp);
 
+const getProjects = () => fetch(PROJECTS_ENDPOINT).then(jsonify);
+const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);
+const getUsers = () => fetch(USERS_ENDPOINT).then(jsonify);
+const getUser = id => fetch(USERS_ENDPOINT + "/" + id).then(jsonify);
+
 export default {
   signup,
   login,
   validate,
-  githubAuth
+  githubAuth,
+  getProjects,
+  getProject,
+  getUsers,
+  getUser
 };

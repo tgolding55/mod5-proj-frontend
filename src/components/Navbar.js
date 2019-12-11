@@ -6,7 +6,7 @@ const Navbar = ({ selectedPage, setSelectedPage }) => {
   const is_active = value => value === selectedPage;
   const options = ["Projects", "Users", "Profile"];
   const menuItem = option => (
-    <Link key={option + "link"} to={option}>
+    <Link key={option + "link"} to={"/" + option}>
       <Menu.Item
         key={option}
         active={is_active(option)}

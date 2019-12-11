@@ -9,6 +9,10 @@ import UserStatus from "./components/UserStatus";
 import Navbar from "./components/Navbar";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import UsersPage from "./pages/UsersPage";
+import ProjectPage from "./pages/ProjectPage";
+import UserPage from "./pages/UserPage";
 
 function App({ history }) {
   const [user, setUser] = useState(null);
@@ -71,12 +75,12 @@ function App({ history }) {
                       <LoginPage setUser={setUser} setLoading={setLoading} />
                     )}
                   />
-                  <Route
-                    path="/Projects"
-                    component={() => <h1>Projects!</h1>}
-                  />
-                  <Route path="/Users" component={() => <h1>Users!</h1>} />
+                  <Route path="/Projects/:id" component={ProjectPage} />
+                  <Route path="/Projects" component={ProjectsPage} />
+                  <Route path="/Users/:id" component={UserPage} />
+                  <Route path="/Users" component={UsersPage} />
                   <Route path="/Profile" component={() => <h1>Profile!</h1>} />
+                  <Route component={() => <h1>Route Not Found</h1>} />
                 </Switch>
               </Segment>
             </Grid.Column>
@@ -106,7 +110,7 @@ function App({ history }) {
           return null;
         }}
       />
-      <Route path="*">
+      <Route exact path="/">
         <Redirect to="/Projects" />
       </Route>
     </div>
