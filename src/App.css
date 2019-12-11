@@ -21,11 +21,17 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.reposList {
+  overflow-y: auto;
+  height: 50vh;
+  width: 75vw;
 }
 
 @keyframes App-logo-spin {
