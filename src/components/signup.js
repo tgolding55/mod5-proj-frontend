@@ -20,7 +20,7 @@ const Signup = ({ setUser, setLoading }) => {
           .then(user => {
             setUser(user);
             setLoading(false);
-            history.push("/");
+            history.push("/Projects");
           })
           .catch(errors => {
             alert(errors);

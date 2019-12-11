@@ -1,9 +1,8 @@
 import React from "react";
-import Login from "./Login";
-import Signup from "./Signup";
 import { Grid, Divider, Segment, Button, Card } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
-const UserStatus = ({ setUser, setLoading, user }) => {
+const UserStatus = ({ setUser, setSelectedPage, user }) => {
   return (
     <Segment>
       {user ? (
@@ -30,10 +29,16 @@ const UserStatus = ({ setUser, setLoading, user }) => {
         <>
           <Grid columns={2} relaxed="very" stackable>
             <Grid.Column>
-              <Login setUser={setUser} setLoading={setLoading} />
+              <Link to="/Login">
+                <Button onClick={() => setSelectedPage("login")}>Login</Button>
+              </Link>
             </Grid.Column>
             <Grid.Column>
-              <Signup setUser={setUser} setLoading={setLoading} />
+              <Link to="/Signup">
+                <Button onClick={() => setSelectedPage("signup")}>
+                  Sign Up
+                </Button>
+              </Link>
             </Grid.Column>
           </Grid>
           <Divider vertical>Or</Divider>
