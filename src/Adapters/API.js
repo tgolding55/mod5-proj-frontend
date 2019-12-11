@@ -3,7 +3,6 @@ const SIGNUP_ENDPOINT = API_ENDPOINT + "users";
 const LOGIN_ENDPOINT = API_ENDPOINT + "login";
 const VALIDATE_ENDPOINT = API_ENDPOINT + "validate";
 const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
-const REPOS_ENDPOINT = API_ENDPOINT + "repos";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -57,17 +56,9 @@ const githubAuth = access_token =>
     .then(jsonify)
     .then(handleUserResp);
 
-const getRepos = () =>
-  fetch(REPOS_ENDPOINT, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token")
-    }
-  }).then(jsonify);
-
 export default {
   signup,
   login,
   validate,
-  githubAuth,
-  getRepos
+  githubAuth
 };

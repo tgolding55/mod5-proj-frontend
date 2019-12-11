@@ -3,22 +3,15 @@ import "./App.css";
 import queryString from "querystring";
 import { Route } from "react-router-dom";
 import API from "./Adapters/API";
-import Login from "./components/login";
-import Signup from "./components/signup";
-import {
-  Button,
-  Dimmer,
-  Loader,
-  Grid,
-  Divider,
-  Segment,
-  Card
-} from "semantic-ui-react";
-import ReposList from "./components/ReposList";
+
+import { Dimmer, Loader, Grid, Segment } from "semantic-ui-react";
+import UserStatus from "./components/UserStatus";
+import Navbar from "./components/Navbar";
 
 function App({ history }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPage, setSelectedPage] = useState("Projects");
 
   useEffect(() => {
     setLoading(true);
@@ -32,48 +25,46 @@ function App({ history }) {
 
   return (
     <div className="App">
-      <header className="App-header">
-        {loading ? (
-          <Dimmer active>
-            <Loader>Loading</Loader>
-          </Dimmer>
-        ) : user ? (
-          user.github_name ? (
-            <>
-              <Card>
-                <Card.Header>Hello {user.github_name}</Card.Header>
-                <Card.Content>
-                  <Button
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      setUser(null);
-                    }}
-                  >
-                    Log out
-                  </Button>
-                </Card.Content>
-              </Card>
-              <ReposList />
-            </>
-          ) : (
-            <Button href="http://localhost:3001/auth/github">
-              Github time!
-            </Button>
-          )
-        ) : (
-          <Segment>
-            <Grid columns={2} relaxed="very" stackable>
-              <Grid.Column>
-                <Login setUser={setUser} setLoading={setLoading} />
-              </Grid.Column>
-              <Grid.Column>
-                <Signup setUser={setUser} setLoading={setLoading} />
-              </Grid.Column>
-            </Grid>
-            <Divider vertical>Or</Divider>
-          </Segment>
-        )}
-      </header>
+      {loading ? (
+        <Dimmer active>
+          <Loader>Loading</Loader>
+        </Dimmer>
+      ) : (
+        <Grid id="layout" padded relaxed>
+          <Grid.Row columns="1" verticalAlign="top">
+            <Grid.Column color="grey" textAlign="center">
+              <h1>Collabapage</h1>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns="2">
+            <Grid.Column id="navbar">
+              <Navbar
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <UserStatus
+                setLoading={setLoading}
+                setUser={setUser}
+                user={user}
+              />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row columns="1">
+            <Grid.Column>
+              <Segment id="appBody">Future Stuff</Segment>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row columns="1" verticalAlign="bottom" stretched>
+            <Grid.Column color="grey" textAlign="center" verticalAlign="middle">
+              <h1>Footer</h1>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      )}
 
       <Route
         path="/auth/response"
