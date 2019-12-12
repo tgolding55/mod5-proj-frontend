@@ -6,7 +6,8 @@ import { Dimmer, Loader } from "semantic-ui-react";
 const UserPage = ({
   match: {
     params: { id }
-  }
+  },
+  user_id
 }) => {
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
@@ -22,7 +23,7 @@ const UserPage = ({
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
 
-      <ProjectsContainer projects={projects} />
+      <ProjectsContainer projects={projects} user_id={user_id} />
     </div>
   ) : (
     <Dimmer active>

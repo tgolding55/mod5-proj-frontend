@@ -14,6 +14,12 @@ const jsonify = resp => {
   });
 };
 
+const auth = () => ({
+  headers: {
+    Authorization: "Bearer " + localStorage.getItem("token")
+  }
+});
+
 const configObj = (method, body, auth = false) => {
   return auth
     ? {
@@ -51,11 +57,7 @@ const signup = userDetails =>
     .then(handleUserResp);
 
 const validate = () =>
-  fetch(VALIDATE_ENDPOINT, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token")
-    }
-  })
+  fetch(VALIDATE_ENDPOINT, auth())
     .then(jsonify)
     .then(handleUserResp);
 
@@ -69,7 +71,7 @@ const githubAuth = access_token =>
     .then(jsonify)
     .then(handleUserResp);
 
-const getProjects = () => fetch(PROJECTS_ENDPOINT).then(jsonify);
+const getProjects = () => fetch(PROJECTS_ENDPOINT, auth()).then(jsonify);
 const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);
 const getUsers = () => fetch(USERS_ENDPOINT).then(jsonify);
 const getUser = id => fetch(USERS_ENDPOINT + "/" + id).then(jsonify);
@@ -80,12 +82,10 @@ const postComment = (content, project_id) =>
     configObj("POST", { comment: { content, project_id } }, true)
   ).then(jsonify);
 
-const getDashboard = () =>
-  fetch(ME_ENDPOINT, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token")
-    }
-  }).then(jsonify);
+const getDashboard = () => fetch(ME_ENDPOINT, auth()).then(jsonify);
+
+const updateLike = id =>
+  fetch(PROJECTS_ENDPOINT + "/" + id + "/like", auth()).then(jsonify);
 
 export default {
   signup,
@@ -97,5 +97,6 @@ export default {
   getUsers,
   getUser,
   postComment,
-  getDashboard
+  getDashboard,
+  updateLike
 };

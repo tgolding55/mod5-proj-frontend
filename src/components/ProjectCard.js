@@ -1,6 +1,7 @@
-import React from "react";
-import { Card } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Card, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
+import API from "../Adapters/API";
 
 const ProjectCard = ({
   id,
@@ -9,21 +10,61 @@ const ProjectCard = ({
   technologies_used,
   collaborator_size_limit,
   collaborator_size,
-  status
-}) => (
-  <Link to={"/Projects/" + id}>
-    <Card onClick={() => null}>
-      <Card.Content>
-        <Card.Header>{title}</Card.Header>
-        <Card.Description>{description}</Card.Description>
-        <Card.Meta>Built With: {technologies_used}</Card.Meta>
-      </Card.Content>
-      <Card.Content extra>
-        status: {status} | Collabarator Size: {collaborator_size}/
-        {collaborator_size_limit}
-      </Card.Content>
-    </Card>
-  </Link>
-);
+  status,
+  project_likes,
+  user_id
+}) => {
+  const [projectLikes, setProjectLikes] = useState([]);
+  const init = () => {
+    setProjectLikes(project_likes);
+  };
+  useEffect(init, []);
+  const iconHandler = e => {
+    e.preventDefault();
+    user_id
+      ? API.updateLike(id).then(({ user_like, liked }) =>
+          liked
+            ? setProjectLikes(
+                projectLikes.filter(like => like.id !== user_like.id)
+              )
+            : setProjectLikes([...projectLikes, user_like])
+        )
+      : alert("You must be signed in to use this!");
+  };
+
+  return (
+    <Link to={"/Projects/" + id}>
+      <Card>
+        <Card.Content>
+          <Card.Meta textAlign="left">
+            {user_id ? (
+              !!projectLikes.find(like => like.user_id === user_id) ? (
+                <Icon onClick={iconHandler} name="star"></Icon>
+              ) : (
+                <Icon onClick={iconHandler} name="star outline"></Icon>
+              )
+            ) : (
+              <Icon
+                onClick={e => {
+                  e.preventDefault();
+                  alert("You must be signed in to use this!");
+                }}
+                name="star outline"
+              />
+            )}
+            {projectLikes.length}
+          </Card.Meta>
+          <Card.Header>{title}</Card.Header>
+          <Card.Description>{description}</Card.Description>
+          <Card.Meta>Built With: {technologies_used}</Card.Meta>
+        </Card.Content>
+        <Card.Content extra>
+          status: {status} | Collabarator Size: {collaborator_size}/
+          {collaborator_size_limit}
+        </Card.Content>
+      </Card>
+    </Link>
+  );
+};
 
 export default ProjectCard;

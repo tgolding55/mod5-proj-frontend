@@ -3,7 +3,7 @@ import API from "../Adapters/API";
 import ProjectsContainer from "../Containers/ProjectsContainer";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-const Dashboard = () => {
+const Dashboard = ({ user_id }) => {
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const init = () => {
@@ -18,7 +18,7 @@ const Dashboard = () => {
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
 
-      <ProjectsContainer projects={projects} />
+      <ProjectsContainer projects={projects} user_id={user_id} />
     </div>
   ) : (
     <Dimmer active>

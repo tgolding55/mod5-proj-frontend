@@ -76,14 +76,36 @@ function App({ history }) {
                       <LoginPage setUser={setUser} setLoading={setLoading} />
                     )}
                   />
-                  <Route path="/Projects/:id" component={ProjectPage} />
-                  <Route path="/Projects" component={ProjectsPage} />
-                  <Route path="/Users/:id" component={UserPage} />
+                  <Route
+                    path="/Projects/:id"
+                    component={({ match }) => (
+                      <ProjectPage
+                        match={match}
+                        user_id={user ? user.id : null}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/Projects"
+                    component={() => (
+                      <ProjectsPage user_id={user ? user.id : null} />
+                    )}
+                  />
+                  <Route
+                    path="/Users/:id"
+                    component={({ match }) => (
+                      <UserPage match={match} user_id={user ? user.id : null} />
+                    )}
+                  />
                   <Route path="/Users" component={UsersPage} />
                   <Route
                     path="/Profile"
                     component={() =>
-                      user ? <Dashboard /> : <Redirect to="/Projects" />
+                      user ? (
+                        <Dashboard user_id={user ? user.id : null} />
+                      ) : (
+                        <Redirect to="/Projects" />
+                      )
                     }
                   />
                   <Route component={() => <h1>Route Not Found</h1>} />
