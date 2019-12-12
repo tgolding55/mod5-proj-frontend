@@ -3,7 +3,6 @@ import "./App.css";
 import queryString from "querystring";
 import { Route, Switch, Redirect } from "react-router-dom";
 import API from "./Adapters/API";
-
 import { Dimmer, Loader, Grid, Segment } from "semantic-ui-react";
 import UserStatus from "./components/UserStatus";
 import Navbar from "./components/Navbar";
@@ -13,6 +12,7 @@ import ProjectsPage from "./pages/ProjectsPage";
 import UsersPage from "./pages/UsersPage";
 import ProjectPage from "./pages/ProjectPage";
 import UserPage from "./pages/UserPage";
+import Dashboard from "./pages/Dashboard";
 
 function App({ history }) {
   const [user, setUser] = useState(null);
@@ -45,6 +45,7 @@ function App({ history }) {
           <Grid.Row columns="2">
             <Grid.Column id="navbar">
               <Navbar
+                user={user}
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}
               />
@@ -79,7 +80,12 @@ function App({ history }) {
                   <Route path="/Projects" component={ProjectsPage} />
                   <Route path="/Users/:id" component={UserPage} />
                   <Route path="/Users" component={UsersPage} />
-                  <Route path="/Profile" component={() => <h1>Profile!</h1>} />
+                  <Route
+                    path="/Profile"
+                    component={() =>
+                      user ? <Dashboard /> : <Redirect to="/Projects" />
+                    }
+                  />
                   <Route component={() => <h1>Route Not Found</h1>} />
                 </Switch>
               </Segment>

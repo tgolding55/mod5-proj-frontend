@@ -3,15 +3,11 @@ import API from "../Adapters/API";
 import ProjectsContainer from "../Containers/ProjectsContainer";
 import { Dimmer, Loader } from "semantic-ui-react";
 
-const UserPage = ({
-  match: {
-    params: { id }
-  }
-}) => {
+const Dashboard = () => {
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const init = () => {
-    API.getUser(id).then(userObj => {
+    API.getDashboard().then(userObj => {
       setUser(userObj.user);
       setProjects(userObj.projects);
     });
@@ -31,4 +27,4 @@ const UserPage = ({
   );
 };
 
-export default UserPage;
+export default Dashboard;

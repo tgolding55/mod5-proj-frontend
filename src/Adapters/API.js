@@ -4,6 +4,8 @@ const LOGIN_ENDPOINT = API_ENDPOINT + "login";
 const VALIDATE_ENDPOINT = API_ENDPOINT + "validate";
 const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
 const PROJECTS_ENDPOINT = API_ENDPOINT + "projects";
+const COMMENTS_ENDPOINT = API_ENDPOINT + "project_comments";
+const ME_ENDPOINT = API_ENDPOINT + "me";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -12,15 +14,25 @@ const jsonify = resp => {
   });
 };
 
-const configObj = (method, body) => {
-  return {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: JSON.stringify(body)
-  };
+const configObj = (method, body, auth = false) => {
+  return auth
+    ? {
+        method,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(body)
+      }
+    : {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(body)
+      };
 };
 
 const handleUserResp = data => {
@@ -62,6 +74,19 @@ const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);
 const getUsers = () => fetch(USERS_ENDPOINT).then(jsonify);
 const getUser = id => fetch(USERS_ENDPOINT + "/" + id).then(jsonify);
 
+const postComment = (content, project_id) =>
+  fetch(
+    COMMENTS_ENDPOINT,
+    configObj("POST", { comment: { content, project_id } }, true)
+  ).then(jsonify);
+
+const getDashboard = () =>
+  fetch(ME_ENDPOINT, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token")
+    }
+  }).then(jsonify);
+
 export default {
   signup,
   login,
@@ -70,5 +95,7 @@ export default {
   getProjects,
   getProject,
   getUsers,
-  getUser
+  getUser,
+  postComment,
+  getDashboard
 };
