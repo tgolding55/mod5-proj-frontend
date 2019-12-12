@@ -22,7 +22,6 @@ const UserPage = ({
     <div>
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
-
       <ProjectsContainer projects={projects} user_id={user_id} />
     </div>
   ) : (

@@ -97,7 +97,12 @@ function App({ history }) {
                       <UserPage match={match} user_id={user ? user.id : null} />
                     )}
                   />
-                  <Route path="/Users" component={UsersPage} />
+                  <Route
+                    path="/Users"
+                    component={() => (
+                      <UsersPage user_id={user ? user.id : null} />
+                    )}
+                  />
                   <Route
                     path="/Profile"
                     component={() =>
