@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import CardComment from "../components/CommentCard";
+import CommentCard from "../components/CommentCard";
 import { Card, Segment, Form, Button } from "semantic-ui-react";
 import API from "../Adapters/API";
 
-const CommentsContainer = ({ comments, project_id, setComments }) => {
+const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {
   const [comment, setComment] = useState("");
   return (
     <Segment>
@@ -29,7 +29,7 @@ const CommentsContainer = ({ comments, project_id, setComments }) => {
 
       <Card.Group itemsPerRow="1">
         {comments.map(comment => (
-          <CardComment {...comment} />
+          <CommentCard {...comment} user_id={user_id} />
         ))}
       </Card.Group>
     </Segment>

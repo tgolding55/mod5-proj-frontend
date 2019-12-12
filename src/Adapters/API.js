@@ -6,6 +6,7 @@ const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
 const PROJECTS_ENDPOINT = API_ENDPOINT + "projects";
 const COMMENTS_ENDPOINT = API_ENDPOINT + "project_comments";
 const ME_ENDPOINT = API_ENDPOINT + "me";
+const COMMENTLIKE_ENDPOINT = API_ENDPOINT + "comment_likes";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -87,6 +88,11 @@ const getDashboard = () => fetch(ME_ENDPOINT, auth()).then(jsonify);
 const updateLike = id =>
   fetch(PROJECTS_ENDPOINT + "/" + id + "/like", auth()).then(jsonify);
 
+const updateCommentLike = comment_id =>
+  fetch(COMMENTLIKE_ENDPOINT, configObj("POST", { comment_id }, true)).then(
+    jsonify
+  );
+
 export default {
   signup,
   login,
@@ -98,5 +104,6 @@ export default {
   getUser,
   postComment,
   getDashboard,
-  updateLike
+  updateLike,
+  updateCommentLike
 };

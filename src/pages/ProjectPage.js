@@ -75,6 +75,7 @@ const ProjectPage = ({
             comments={comments}
             project_id={id}
             setComments={setComments}
+            user_id={user_id}
           />
         </Grid.Column>
       </Grid.Row>
