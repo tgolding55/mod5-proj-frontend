@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../Adapters/API";
 import UsersContainer from "../Containers/UsersContainer";
-import { Dimmer, Loader, Grid, Icon } from "semantic-ui-react";
+import { Dimmer, Loader, Grid, Icon, Button } from "semantic-ui-react";
 import CommentsContainer from "../Containers/CommentsContainer";
 
 const ProjectPage = ({
@@ -9,13 +9,13 @@ const ProjectPage = ({
     params: { id }
   },
   user_id,
+  github_linked,
   history
 }) => {
   const [project, setProject] = useState([]);
   const [collabarators, setCollabarators] = useState([]);
   const [comments, setComments] = useState([]);
   const [projectLikes, setProjectLikes] = useState([]);
-
   const init = () => {
     API.getProject(id).then(projectObj => {
       setProject(projectObj.project);
@@ -25,6 +25,11 @@ const ProjectPage = ({
     });
   };
   useEffect(init, []);
+
+  const joinProject = () =>
+    API.joinProject(id).then(collabaratorObj =>
+      setCollabarators([...collabarators, collabaratorObj.collaborator])
+    );
 
   const iconHandler = e => {
     e.preventDefault();
@@ -59,9 +64,23 @@ const ProjectPage = ({
           <h1>{project.title}</h1>
           <h3>Made with {project.technologies_used}</h3>
           <p>{project.description}</p>
-          <p>
-            {project.collaborator_size}/{project.collaborator_size_limit}
-          </p>
+          {github_linked && !collabarators.find(user => user.id === user_id) ? (
+            collabarators.length >= project.collaborator_size_limit ? (
+              <Button disabled>
+                Project Full - {collabarators.length}/
+                {project.collaborator_size_limit}
+              </Button>
+            ) : (
+              <Button onClick={joinProject}>
+                Join Project - {collabarators.length}/
+                {project.collaborator_size_limit}
+              </Button>
+            )
+          ) : (
+            <Button disabled>
+              {collabarators.length}/{project.collaborator_size_limit}
+            </Button>
+          )}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

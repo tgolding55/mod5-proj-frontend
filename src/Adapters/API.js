@@ -9,6 +9,7 @@ const ME_ENDPOINT = API_ENDPOINT + "me";
 const COMMENTLIKE_ENDPOINT = API_ENDPOINT + "comment_likes";
 const USERLIKE_ENDPOINT = API_ENDPOINT + "like";
 const SEARCH_ENDPOINT = API_ENDPOINT + "search";
+const COLLABORATORS_ENDPOINT = API_ENDPOINT + "collaborators";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -104,7 +105,11 @@ const newProject = newProject =>
     configObj("POST", { project: newProject }, true)
   ).then(jsonify);
 
-const search = search => fetch(SEARCH_ENDPOINT, configObj("POST", { search })).then(jsonify);
+const search = search =>
+  fetch(SEARCH_ENDPOINT, configObj("POST", { search })).then(jsonify);
+
+const joinProject = id =>
+  fetch(COLLABORATORS_ENDPOINT, configObj("POST", { id }, true)).then(jsonify);
 
 export default {
   signup,
@@ -121,5 +126,6 @@ export default {
   updateCommentLike,
   updateUserLike,
   newProject,
-  search
+  search,
+  joinProject
 };

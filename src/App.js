@@ -98,6 +98,7 @@ function App({ history }) {
                       <ProjectPage
                         match={match}
                         user_id={user ? user.id : null}
+                        github_linked={user ? user.github_linked : false}
                         history={history}
                       />
                     )}
