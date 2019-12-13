@@ -1,9 +1,16 @@
-import React from "react";
-import { Menu, Search } from "semantic-ui-react";
+import React, { useState } from "react";
+import { Menu, Input } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-const Navbar = ({ selectedPage, setSelectedPage, user }) => {
+const Navbar = ({
+  selectedPage,
+  setSelectedPage,
+  user,
+  setAppSearch,
+  history
+}) => {
   const is_active = value => value === selectedPage;
+  const [search, setSearch] = useState("");
   const options = ["Projects", "Users"];
   const menuItem = option => (
     <Link key={option + "link"} to={"/" + option}>
@@ -16,6 +23,7 @@ const Navbar = ({ selectedPage, setSelectedPage, user }) => {
       </Menu.Item>
     </Link>
   );
+
   return (
     <Menu>
       {options.map(option => menuItem(option))}
@@ -32,7 +40,21 @@ const Navbar = ({ selectedPage, setSelectedPage, user }) => {
         </Link>
       )}
       <div style={{ width: "100%" }}></div>
-      <Search fluid placeholder="Not implemented"></Search>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          setAppSearch(search);
+          history.push("/Search");
+          setSearch("");
+        }}
+      >
+        <Input
+          icon="search"
+          placeholder="Search projects/users..."
+          value={search}
+          onChange={(e, { value }) => setSearch(value)}
+        />
+      </form>
     </Menu>
   );
 };

@@ -65,7 +65,7 @@ const ProjectPage = ({
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <UsersContainer users={collabarators} />
+          <UsersContainer users={collabarators} user_id={user_id} />
         </Grid.Column>
       </Grid.Row>
 

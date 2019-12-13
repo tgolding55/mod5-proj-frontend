@@ -21,7 +21,7 @@ const UserCard = ({ id, username, github_linked, bio, likees, user_id }) => {
           <Card.Meta textAlign="left">
             {user_id ? (
               userLikees.find(likee => likee.id === user_id) ? (
-                <Icon name="heart" onClick={handleLike}></Icon>
+                <Icon name="heart" color="red" onClick={handleLike}></Icon>
               ) : (
                 <Icon name="heart outline" onClick={handleLike}></Icon>
               )

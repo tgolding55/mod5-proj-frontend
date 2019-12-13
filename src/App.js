@@ -13,10 +13,13 @@ import UsersPage from "./pages/UsersPage";
 import ProjectPage from "./pages/ProjectPage";
 import UserPage from "./pages/UserPage";
 import Dashboard from "./pages/Dashboard";
+import NewProjectPage from "./pages/NewProjectPage";
+import SearchPage from "./pages/SearchPage";
 
 function App({ history }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const [selectedPage, setSelectedPage] = useState("Projects");
 
   useEffect(() => {
@@ -48,6 +51,8 @@ function App({ history }) {
                 user={user}
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}
+                setAppSearch={setSearch}
+                history={history}
               />
             </Grid.Column>
             <Grid.Column>
@@ -65,6 +70,10 @@ function App({ history }) {
               <Segment id="appBody">
                 <Switch>
                   <Route
+                    path="/Search"
+                    component={() => <SearchPage search={search} />}
+                  />
+                  <Route
                     path="/Signup"
                     component={() => (
                       <SignupPage setUser={setUser} setLoading={setLoading} />
@@ -76,6 +85,7 @@ function App({ history }) {
                       <LoginPage setUser={setUser} setLoading={setLoading} />
                     )}
                   />
+                  <Route path="/Projects/New" component={NewProjectPage} />
                   <Route
                     path="/Projects/:id"
                     component={({ match }) => (
@@ -88,7 +98,10 @@ function App({ history }) {
                   <Route
                     path="/Projects"
                     component={() => (
-                      <ProjectsPage user_id={user ? user.id : null} />
+                      <ProjectsPage
+                        user_id={user ? user.id : null}
+                        github_linked={user ? user.github_linked : false}
+                      />
                     )}
                   />
                   <Route
@@ -113,6 +126,7 @@ function App({ history }) {
                       )
                     }
                   />
+
                   <Route component={() => <h1>Route Not Found</h1>} />
                 </Switch>
               </Segment>
