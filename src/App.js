@@ -72,7 +72,11 @@ function App({ history }) {
                   <Route
                     path="/Search"
                     component={() => (
-                      <SearchPage search={search} history={history} />
+                      <SearchPage
+                        search={search}
+                        history={history}
+                        user_id={user ? user.id : null}
+                      />
                     )}
                   />
                   <Route

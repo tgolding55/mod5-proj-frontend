@@ -7,7 +7,8 @@ const UserPage = ({
   match: {
     params: { id }
   },
-  user_id
+  user_id,
+  history
 }) => {
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
@@ -44,7 +45,11 @@ const UserPage = ({
       {userLikees.length}
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
-      <ProjectsContainer projects={projects} user_id={user_id} />
+      <ProjectsContainer
+        projects={projects}
+        user_id={user_id}
+        history={history}
+      />
     </div>
   ) : (
     <Dimmer active>

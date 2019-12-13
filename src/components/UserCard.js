@@ -13,7 +13,7 @@ const UserCard = ({
 }) => {
   const [userLikees, setUserLikees] = useState([]);
   const handleLike = e => {
-    e.preventDefault();
+    e.stopPropagation();
     API.updateUserLike(id).then(resp => setUserLikees(resp));
   };
 
@@ -35,7 +35,7 @@ const UserCard = ({
             <Icon
               name="heart outline"
               onClick={e => {
-                e.preventDefault();
+                e.stopPropagation();
                 alert("You must be logged in to do that!");
               }}
             />

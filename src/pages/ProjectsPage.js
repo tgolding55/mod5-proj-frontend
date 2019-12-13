@@ -25,7 +25,11 @@ const ProjectsPage = ({ user_id, github_linked, history }) => {
       </Grid.Row>
       <Grid.Row columns="1">
         <Grid.Column>
-          <ProjectsContainer projects={projects} user_id={user_id} />
+          <ProjectsContainer
+            projects={projects}
+            user_id={user_id}
+            history={history}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>
