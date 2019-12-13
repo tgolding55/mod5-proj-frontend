@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import API from "../Adapters/API";
 import ProjectsContainer from "../Containers/ProjectsContainer";
 import { Menu, Grid } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 
-const ProjectsPage = ({ user_id, github_linked }) => {
+const ProjectsPage = ({ user_id, github_linked, history }) => {
   const [projects, setProjects] = useState([]);
   const init = () => {
     API.getProjects().then(projectsObj => setProjects(projectsObj.projects));
@@ -17,9 +16,9 @@ const ProjectsPage = ({ user_id, github_linked }) => {
         <Grid.Column>
           <Menu>
             {github_linked && (
-              <Link to="/Projects/New">
-                <Menu.Item>New Project</Menu.Item>
-              </Link>
+              <Menu.Item onClick={() => history.push("/Projects/New")}>
+                New Project
+              </Menu.Item>
             )}
           </Menu>
         </Grid.Column>

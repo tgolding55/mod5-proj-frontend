@@ -8,7 +8,8 @@ const ProjectPage = ({
   match: {
     params: { id }
   },
-  user_id
+  user_id,
+  history
 }) => {
   const [project, setProject] = useState([]);
   const [collabarators, setCollabarators] = useState([]);
@@ -65,7 +66,11 @@ const ProjectPage = ({
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-          <UsersContainer users={collabarators} user_id={user_id} />
+          <UsersContainer
+            users={collabarators}
+            user_id={user_id}
+            history={history}
+          />
         </Grid.Column>
       </Grid.Row>
 

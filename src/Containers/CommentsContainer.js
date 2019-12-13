@@ -29,7 +29,11 @@ const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {
 
       <Card.Group itemsPerRow="1">
         {comments.map(comment => (
-          <CommentCard {...comment} user_id={user_id} />
+          <CommentCard
+            key={comment.comment_id + "comment"}
+            {...comment}
+            user_id={user_id}
+          />
         ))}
       </Card.Group>
     </Segment>

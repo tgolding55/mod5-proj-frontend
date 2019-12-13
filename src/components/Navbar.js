@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Menu, Input } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 
 const Navbar = ({
   selectedPage,
@@ -13,15 +12,16 @@ const Navbar = ({
   const [search, setSearch] = useState("");
   const options = ["Projects", "Users"];
   const menuItem = option => (
-    <Link key={option + "link"} to={"/" + option}>
-      <Menu.Item
-        key={option}
-        active={is_active(option)}
-        onClick={e => setSelectedPage(e.target.innerText)}
-      >
-        {option}
-      </Menu.Item>
-    </Link>
+    <Menu.Item
+      key={option}
+      active={is_active(option)}
+      onClick={e => {
+        setSelectedPage(e.target.innerText);
+        history.push("/" + e.target.innerText);
+      }}
+    >
+      {option}
+    </Menu.Item>
   );
 
   return (
@@ -29,15 +29,16 @@ const Navbar = ({
       {options.map(option => menuItem(option))}
 
       {user && (
-        <Link key={"Profilelink"} to={"/Profile"}>
-          <Menu.Item
-            key="Profile"
-            active={is_active("Profile")}
-            onClick={e => setSelectedPage(e.target.innerText)}
-          >
-            Profile
-          </Menu.Item>
-        </Link>
+        <Menu.Item
+          key="Profile"
+          active={is_active("Profile")}
+          onClick={e => {
+            setSelectedPage(e.target.innerText);
+            history.push("/" + e.target.innerText);
+          }}
+        >
+          Profile
+        </Menu.Item>
       )}
       <div style={{ width: "100%" }}></div>
       <form

@@ -71,7 +71,9 @@ function App({ history }) {
                 <Switch>
                   <Route
                     path="/Search"
-                    component={() => <SearchPage search={search} />}
+                    component={() => (
+                      <SearchPage search={search} history={history} />
+                    )}
                   />
                   <Route
                     path="/Signup"
@@ -92,6 +94,7 @@ function App({ history }) {
                       <ProjectPage
                         match={match}
                         user_id={user ? user.id : null}
+                        history={history}
                       />
                     )}
                   />
@@ -101,26 +104,37 @@ function App({ history }) {
                       <ProjectsPage
                         user_id={user ? user.id : null}
                         github_linked={user ? user.github_linked : false}
+                        history={history}
                       />
                     )}
                   />
                   <Route
                     path="/Users/:id"
                     component={({ match }) => (
-                      <UserPage match={match} user_id={user ? user.id : null} />
+                      <UserPage
+                        match={match}
+                        user_id={user ? user.id : null}
+                        history={history}
+                      />
                     )}
                   />
                   <Route
                     path="/Users"
                     component={() => (
-                      <UsersPage user_id={user ? user.id : null} />
+                      <UsersPage
+                        user_id={user ? user.id : null}
+                        history={history}
+                      />
                     )}
                   />
                   <Route
                     path="/Profile"
                     component={() =>
                       user ? (
-                        <Dashboard user_id={user ? user.id : null} />
+                        <Dashboard
+                          user_id={user ? user.id : null}
+                          history={history}
+                        />
                       ) : (
                         <Redirect to="/Projects" />
                       )
