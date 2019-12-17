@@ -77,6 +77,13 @@ const githubAuth = access_token =>
 
 const getProjects = () => fetch(PROJECTS_ENDPOINT, auth()).then(jsonify);
 const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);
+const editProject = id =>
+  fetch(PROJECTS_ENDPOINT + "/" + id + "/edit", auth()).then(jsonify);
+const updateProject = (id, status) =>
+  fetch(
+    PROJECTS_ENDPOINT + "/" + id,
+    configObj("PATCH", { status }, auth)
+  ).then(jsonify);
 const getUsers = () => fetch(USERS_ENDPOINT).then(jsonify);
 const getUser = id => fetch(USERS_ENDPOINT + "/" + id).then(jsonify);
 
@@ -111,6 +118,12 @@ const search = search =>
 const joinProject = id =>
   fetch(COLLABORATORS_ENDPOINT, configObj("POST", { id }, true)).then(jsonify);
 
+const createProjectRepo = (id, projectDetails) =>
+  fetch(
+    PROJECTS_ENDPOINT + "/" + id + "/repo",
+    configObj("PATCH", { projectDetails }, true)
+  ).then(jsonify);
+
 export default {
   signup,
   login,
@@ -127,5 +140,8 @@ export default {
   updateUserLike,
   newProject,
   search,
-  joinProject
+  joinProject,
+  editProject,
+  updateProject,
+  createProjectRepo
 };

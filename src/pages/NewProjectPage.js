@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Dropdown } from "semantic-ui-react";
 import API from "../Adapters/API";
+
+const options = [
+  { key: "Planning", text: "Planning", value: "Planning" },
+  { key: "In Progress", text: "In Progress", value: "In Progress" },
+  { key: "Completed", text: "Completed", value: "Completed" }
+];
 
 const NewProjectPage = () => {
   const [newProject, setNewProject] = useState({
@@ -8,7 +14,7 @@ const NewProjectPage = () => {
     technologies_used: "",
     description: "",
     collaborator_size_limit: "",
-    status: "planning"
+    status: "Planning"
   });
 
   const handleChange = (e, { name, value }) => {
@@ -56,11 +62,20 @@ const NewProjectPage = () => {
       />
       <Form.Input
         required
-        label="Status"
-        name="status"
-        value={newProject.status}
+        label="Timeframe"
+        type="number"
+        name="timeframe"
+        value={newProject.timeframe}
         onChange={handleChange}
       />
+      <Dropdown
+        required
+        name="status"
+        value={newProject.status}
+        selection
+        options={options}
+        onChange={handleChange}
+      ></Dropdown>
       <Form.Button>Submit</Form.Button>
     </Form>
   );

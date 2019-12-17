@@ -12,6 +12,8 @@ const ProjectCard = ({
   status,
   project_likes,
   user_id,
+  github_link,
+  timeframe,
   history
 }) => {
   const [projectLikes, setProjectLikes] = useState([]);
@@ -61,6 +63,11 @@ const ProjectCard = ({
         status: {status} | Collabarator Size: {collaborator_size}/
         {collaborator_size_limit}
       </Card.Content>
+      {status !== "Completed" ? (
+        <Card.Content extra>Timeframe: {timeframe} weeks</Card.Content>
+      ) : (
+        ""
+      )}
     </Card>
   );
 };

@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import UsersPage from "./pages/UsersPage";
 import ProjectPage from "./pages/ProjectPage";
+import ProjectDashboard from "./pages/ProjectDashboard";
 import UserPage from "./pages/UserPage";
 import Dashboard from "./pages/Dashboard";
 import NewProjectPage from "./pages/NewProjectPage";
@@ -93,12 +94,23 @@ function App({ history }) {
                   />
                   <Route path="/Projects/New" component={NewProjectPage} />
                   <Route
+                    exact
                     path="/Projects/:id"
                     component={({ match }) => (
                       <ProjectPage
                         match={match}
                         user_id={user ? user.id : null}
                         github_linked={user ? user.github_linked : false}
+                        history={history}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/Projects/:id/edit"
+                    component={({ match }) => (
+                      <ProjectDashboard
+                        match={match}
+                        user_id={user ? user.id : null}
                         history={history}
                       />
                     )}

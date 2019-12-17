@@ -9,7 +9,8 @@ const UserCard = ({
   bio,
   likees,
   user_id,
-  history
+  history,
+  role = null
 }) => {
   const [userLikees, setUserLikees] = useState([]);
   const handleLike = e => {
@@ -44,7 +45,10 @@ const UserCard = ({
         </Card.Meta>
         <Card.Header>{username}</Card.Header>
         <Card.Description>{bio}</Card.Description>
-        <Card.Meta>Github {github_linked ? "Linked" : "Not Linked"}</Card.Meta>
+        <Card.Meta>
+          <p>Github {github_linked ? "Linked" : "Not Linked"}</p>
+          {role ? <p>{role}</p> : ""}
+        </Card.Meta>
       </Card.Content>
     </Card>
   );
