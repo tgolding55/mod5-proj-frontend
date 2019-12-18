@@ -41,13 +41,18 @@ function App({ history }) {
         </Dimmer>
       ) : (
         <Grid id="layout" padded relaxed>
-          <Grid.Row columns="1" verticalAlign="top">
-            <Grid.Column color="black" textAlign="center">
+          <Grid.Row columns="1" verticalAlign="top" style={{ height: "10vh" }}>
+            <Grid.Column
+              color="black"
+              textAlign="center"
+              fluid="true"
+              stretched
+            >
               <h1>Collabapage</h1>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns="2">
-            <Grid.Column id="navbar">
+          <Grid.Row columns="2" className="navbar" style={{ height: "10vh" }}>
+            <Grid.Column id="navbar" stretched>
               <Navbar
                 user={user}
                 selectedPage={selectedPage}
@@ -56,7 +61,7 @@ function App({ history }) {
                 history={history}
               />
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column stretched width="4" floated="right">
               <UserStatus
                 setLoading={setLoading}
                 setUser={setUser}
@@ -164,7 +169,12 @@ function App({ history }) {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row columns="1" verticalAlign="bottom" stretched>
+          <Grid.Row
+            columns="1"
+            verticalAlign="bottom"
+            stretched
+            style={{ height: "10vh" }}
+          >
             <Grid.Column
               color="black"
               textAlign="center"

@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Dimmer, Loader } from "semantic-ui-react";
 import ProjectsContainer from "../Containers/ProjectsContainer";
 import UsersContainer from "../Containers/UsersContainer";
 import API from "../Adapters/API";
 
 const SearchPage = ({ search, history, user_id }) => {
   const [results, setResults] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
   const init = () => {
-    API.search(search).then(results => {
-      setResults(results);
-    });
+    setLoading(true);
+    API.search(search)
+      .then(results => {
+        setResults(results);
+        setLoading(false);
+      })
+      .catch(errors => {
+        setErrors(errors);
+        setLoading(false);
+      });
   };
 
   useEffect(init, []);
 
-  return !!Object.keys(results).length ? (
+  return loading ? (
+    <Dimmer>
+      <Loader>Loading</Loader>
+    </Dimmer>
+  ) : !!Object.keys(results).length ? (
     <Grid>
       <Grid.Row>
         You searched for "{results.search}". We found {results.projects.length}{" "}
@@ -24,6 +37,7 @@ const SearchPage = ({ search, history, user_id }) => {
       </Grid.Row>
       <Grid.Row columns="2">
         <Grid.Column>
+          <h2>Projects</h2>
           <ProjectsContainer
             projects={results.projects}
             history={history}
@@ -31,6 +45,7 @@ const SearchPage = ({ search, history, user_id }) => {
           />
         </Grid.Column>
         <Grid.Column>
+          <h2>Users</h2>
           <UsersContainer
             users={results.users}
             history={history}
@@ -40,7 +55,7 @@ const SearchPage = ({ search, history, user_id }) => {
       </Grid.Row>
     </Grid>
   ) : (
-    <div>loading</div>
+    errors.map(error => <h1 key={error}>{error}</h1>)
   );
 };
 

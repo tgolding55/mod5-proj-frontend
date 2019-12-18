@@ -99,7 +99,6 @@ const ProjectPage = ({
             />
           )}
           {projectLikes.length}
-          <h1>hi!</h1>
           <h1>{project.title}</h1>
           <h3>Made with {project.technologies_used}</h3>
           <p>{project.description}</p>

@@ -44,6 +44,13 @@ const ProjectPage = ({
     <Grid>
       <Grid.Row>
         <Grid.Column>
+          {!!collabarators.find(collaborator => collaborator.id === user_id) ? (
+            <Button onClick={() => history.push("/Projects/" + id + "/edit")}>
+              Manage
+            </Button>
+          ) : (
+            ""
+          )}
           <h1>{project.status}</h1>
           {user_id ? (
             !!projectLikes.find(like => like.user_id === user_id) ? (

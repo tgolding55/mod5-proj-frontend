@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Input } from "semantic-ui-react";
+import { Menu, Input, Form } from "semantic-ui-react";
 
 const Navbar = ({
   selectedPage,
@@ -40,22 +40,27 @@ const Navbar = ({
           Profile
         </Menu.Item>
       )}
+
       <div style={{ width: "100%" }}></div>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          setAppSearch(search);
-          history.push("/Search");
-          setSearch("");
-        }}
-      >
-        <Input
-          icon="search"
-          placeholder="Search projects/users..."
-          value={search}
-          onChange={(e, { value }) => setSearch(value)}
-        />
-      </form>
+
+      <Menu.Item>
+        <Form
+          onSubmit={e => {
+            e.preventDefault();
+            setAppSearch(search);
+            history.push("/Search");
+            setSearch("");
+          }}
+        >
+          <Input
+            className="searchbar"
+            icon="search"
+            placeholder="Search projects/users..."
+            value={search}
+            onChange={(e, { value }) => setSearch(value)}
+          />
+        </Form>
+      </Menu.Item>
     </Menu>
   );
 };
