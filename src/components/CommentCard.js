@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Icon } from "semantic-ui-react";
+import { Comment, Icon } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const CommentCard = ({ content, likes, user, comment_id, user_id }) => {
@@ -18,9 +18,9 @@ const CommentCard = ({ content, likes, user, comment_id, user_id }) => {
   };
   useEffect(init, []);
   return (
-    <Card>
-      <Card.Content>
-        <Card.Meta textAlign="left">
+    <Comment>
+      <Comment.Content>
+        <Comment.Metadata textAlign="left">
           {user_id ? (
             !!commentLikes.find(like => like.user_id === user_id) ? (
               <Icon name="heart" onClick={handleClick} />
@@ -34,11 +34,11 @@ const CommentCard = ({ content, likes, user, comment_id, user_id }) => {
             />
           )}
           {commentLikes.length}
-        </Card.Meta>
-        <Card.Header>{user.username}</Card.Header>
-        <Card.Description>{content}</Card.Description>
-      </Card.Content>
-    </Card>
+        </Comment.Metadata>
+        <Comment.Author>{user.username}</Comment.Author>
+        <Comment.Text>{content}</Comment.Text>
+      </Comment.Content>
+    </Comment>
   );
 };
 

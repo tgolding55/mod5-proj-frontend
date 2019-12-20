@@ -108,7 +108,9 @@ const ProjectPage = ({
             <Form
               onSubmit={e => {
                 e.preventDefault();
-                API.createProjectRepo(id, projectDetails);
+                API.createProjectRepo(id, projectDetails).then(projectObj =>
+                  setProject(projectObj.project)
+                );
               }}
             >
               <label>Create Github Repo</label>

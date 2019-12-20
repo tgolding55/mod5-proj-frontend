@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CommentCard from "../components/CommentCard";
-import { Card, Segment, Form, Button } from "semantic-ui-react";
+import { Comment, Segment, Form, Button, Header } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {
@@ -30,15 +30,20 @@ const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {
       ) : (
         ""
       )}
-      <Card.Group itemsPerRow="1">
-        {comments.map(comment => (
-          <CommentCard
-            key={comment.comment_id + "comment"}
-            {...comment}
-            user_id={user_id}
-          />
-        ))}
-      </Card.Group>
+      <div style={{ width: "100%" }}>
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Comments
+          </Header>
+          {comments.map(comment => (
+            <CommentCard
+              key={comment.comment_id + "comment"}
+              {...comment}
+              user_id={user_id}
+            />
+          ))}
+        </Comment.Group>
+      </div>
     </Segment>
   );
 };

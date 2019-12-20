@@ -97,7 +97,10 @@ function App({ history }) {
                       <LoginPage setUser={setUser} setLoading={setLoading} />
                     )}
                   />
-                  <Route path="/Projects/New" component={NewProjectPage} />
+                  <Route
+                    path="/Projects/New"
+                    component={() => <NewProjectPage history={history} />}
+                  />
                   <Route
                     exact
                     path="/Projects/:id"

@@ -124,6 +124,12 @@ const createProjectRepo = (id, projectDetails) =>
     configObj("PATCH", { projectDetails }, true)
   ).then(jsonify);
 
+const getRepos = page =>
+  fetch(
+    USERS_ENDPOINT + "/repos",
+    configObj("POST", { page: page }, true)
+  ).then(jsonify);
+
 export default {
   signup,
   login,
@@ -143,5 +149,6 @@ export default {
   joinProject,
   editProject,
   updateProject,
-  createProjectRepo
+  createProjectRepo,
+  getRepos
 };
