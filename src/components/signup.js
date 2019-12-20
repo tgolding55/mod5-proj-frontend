@@ -6,6 +6,7 @@ import { Form, Button } from "semantic-ui-react";
 const Signup = ({ setUser, setLoading }) => {
   const [signupUserField, setSignupUserField] = useState("");
   const [signupPasswordField, setSignupPasswordField] = useState("");
+  const [signupBioField, setSignupBioField] = useState("");
   const history = useHistory();
 
   return (
@@ -15,12 +16,13 @@ const Signup = ({ setUser, setLoading }) => {
         setLoading(true);
         API.signup({
           username: signupUserField,
-          password: signupPasswordField
+          password: signupPasswordField,
+          bio: signupBioField
         })
           .then(user => {
             setUser(user);
             setLoading(false);
-            history.push("/");
+            history.push("/Projects");
           })
           .catch(errors => {
             alert(errors);
@@ -45,6 +47,15 @@ const Signup = ({ setUser, setLoading }) => {
           placeholder="signup password"
           value={signupPasswordField}
           onChange={e => setSignupPasswordField(e.target.value)}
+        ></input>
+      </Form.Field>
+      <Form.Field>
+        <label>Bio</label>
+        <input
+          type="text"
+          placeholder="bio"
+          value={signupBioField}
+          onChange={e => setSignupBioField(e.target.value)}
         ></input>
       </Form.Field>
       <Button type="submit">Sign Up</Button>
