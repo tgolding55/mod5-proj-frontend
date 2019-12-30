@@ -31,6 +31,8 @@ const ProjectPage = ({
   const [projectLikes, setProjectLikes] = useState([]);
   const [status, setStatus] = useState("");
   const [projectDetails, setProjectDetails] = useState({ title: "" });
+  const [messages, setMessages] = useState([]);
+  const [content, setContent] = useState("");
   const init = () => {
     API.editProject(id)
       .then(projectObj => {
@@ -50,6 +52,16 @@ const ProjectPage = ({
     setComments(projectObj.comments);
     setProjectLikes(projectObj.project.project_likes);
     setProjectDetails({ title: projectObj.project.title });
+    startMessages(projectObj.messages);
+  };
+
+  const startMessages = messages => {
+    setMessages(messages);
+    setInterval(() => {
+      API.getMessages(id).then(newMessages =>
+        newMessages === messages ? null : setMessages(newMessages.messages)
+      );
+    }, 1000);
   };
 
   const iconHandler = e => {
@@ -144,6 +156,39 @@ const ProjectPage = ({
 
       <Grid.Row>
         <Grid.Column>
+          <div>
+            <Form
+              onSubmit={e => {
+                e.preventDefault();
+                API.createMessage(content, id).then(newMessage =>
+                  setMessages([...messages, newMessage.message])
+                );
+                setContent("");
+              }}
+            >
+              <Form.Input
+                required
+                fluid
+                name="content"
+                value={content}
+                label="New Message"
+                placeholder="content"
+                onChange={(e, { value }) => setContent(value)}
+              />
+            </Form>
+            {messages.length ? (
+              <div>
+                {messages.map(message => (
+                  <div>
+                    {message.user.username}: {message.content}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
           <CommentsContainer
             comments={comments}
             project_id={id}
