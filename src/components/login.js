@@ -1,52 +1,59 @@
 import React, { useState } from "react";
 import API from "../Adapters/API";
 import { useHistory } from "react-router-dom";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 
-const Login = ({ setUser, setLoading }) => {
+const Login = ({ setUser }) => {
   const [loginUserField, setLoginUserField] = useState("");
   const [loginPasswordField, setLoginPasswordField] = useState("");
+  const [errors, setErrors] = useState([]);
   const history = useHistory();
 
   return (
     <Form
       onSubmit={e => {
         e.preventDefault();
-        setLoading(true);
+
         API.login({
           username: loginUserField,
           password: loginPasswordField
         })
           .then(user => {
             setUser(user);
-            setLoading(false);
             history.push("/Projects");
           })
           .catch(errors => {
-            alert(errors);
-            setLoading(false);
+            setErrors(errors);
           });
         setLoginPasswordField("");
         setLoginUserField("");
       }}
+      error
     >
-      <Form.Field>
-        <label>Username</label>
-        <input
-          placeholder="login username"
-          value={loginUserField}
-          onChange={e => setLoginUserField(e.target.value)}
-        />
-      </Form.Field>
-      <Form.Field>
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="login password"
-          value={loginPasswordField}
-          onChange={e => setLoginPasswordField(e.target.value)}
-        ></input>
-      </Form.Field>
+      {errors.length ? (
+        <Message error header="Error!" content={errors[0]} />
+      ) : (
+        ""
+      )}
+      <Form.Input
+        required
+        fluid
+        label="Username"
+        placeholder="Username"
+        value={loginUserField}
+        onChange={e => setLoginUserField(e.target.value)}
+      />
+
+      <Form.Input
+        label="Password"
+        type="password"
+        placeholder="Password"
+        required
+        fluid
+        value={loginPasswordField}
+        onChange={e => setLoginPasswordField(e.target.value)}
+      />
+
       <Button type="submit">Log In</Button>
     </Form>
   );

@@ -3,7 +3,7 @@ import "./App.css";
 import queryString from "querystring";
 import { Route, Switch, Redirect } from "react-router-dom";
 import API from "./Adapters/API";
-import { Dimmer, Loader, Grid, Segment } from "semantic-ui-react";
+import { Dimmer, Loader, Grid, Segment, Icon } from "semantic-ui-react";
 import UserStatus from "./components/UserStatus";
 import Navbar from "./components/Navbar";
 import SignupPage from "./pages/SignupPage";
@@ -67,6 +67,7 @@ function App({ history }) {
                 setUser={setUser}
                 user={user}
                 setSelectedPage={setSelectedPage}
+                history={history}
               />
             </Grid.Column>
           </Grid.Row>
@@ -77,93 +78,121 @@ function App({ history }) {
                 <Switch>
                   <Route
                     path="/Search"
-                    component={() => (
-                      <SearchPage
-                        search={search}
-                        history={history}
-                        user_id={user ? user.id : null}
-                      />
-                    )}
+                    component={() => {
+                      setSelectedPage(null);
+                      return (
+                        <SearchPage
+                          search={search}
+                          history={history}
+                          user_id={user ? user.id : null}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Signup"
-                    component={() => (
-                      <SignupPage setUser={setUser} setLoading={setLoading} />
-                    )}
+                    component={() => {
+                      setSelectedPage(null);
+                      return (
+                        <SignupPage setUser={setUser} setLoading={setLoading} />
+                      );
+                    }}
                   />
                   <Route
                     path="/Login"
-                    component={() => (
-                      <LoginPage setUser={setUser} setLoading={setLoading} />
-                    )}
+                    component={() => {
+                      setSelectedPage(null);
+                      return (
+                        <LoginPage setUser={setUser} setLoading={setLoading} />
+                      );
+                    }}
                   />
                   <Route
                     path="/Projects/New"
-                    component={() => <NewProjectPage history={history} />}
+                    component={() => {
+                      setSelectedPage("Projects");
+                      return <NewProjectPage history={history} />;
+                    }}
                   />
                   <Route
                     exact
                     path="/Projects/:id"
-                    component={({ match }) => (
-                      <ProjectPage
-                        match={match}
-                        user_id={user ? user.id : null}
-                        github_linked={user ? user.github_linked : false}
-                        history={history}
-                      />
-                    )}
+                    component={({ match }) => {
+                      setSelectedPage("Projects");
+                      return (
+                        <ProjectPage
+                          match={match}
+                          user_id={user ? user.id : null}
+                          github_linked={user ? user.github_linked : false}
+                          history={history}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Projects/:id/edit"
-                    component={({ match }) => (
-                      <ProjectDashboard
-                        match={match}
-                        user_id={user ? user.id : null}
-                        history={history}
-                      />
-                    )}
+                    component={({ match }) => {
+                      setSelectedPage("Projects");
+                      return (
+                        <ProjectDashboard
+                          match={match}
+                          user_id={user ? user.id : null}
+                          history={history}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Projects"
-                    component={() => (
-                      <ProjectsPage
-                        user_id={user ? user.id : null}
-                        github_linked={user ? user.github_linked : false}
-                        history={history}
-                      />
-                    )}
+                    component={() => {
+                      setSelectedPage("Projects");
+                      return (
+                        <ProjectsPage
+                          user_id={user ? user.id : null}
+                          github_linked={user ? user.github_linked : false}
+                          history={history}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Users/:id"
-                    component={({ match }) => (
-                      <UserPage
-                        match={match}
-                        user_id={user ? user.id : null}
-                        history={history}
-                      />
-                    )}
+                    component={({ match }) => {
+                      setSelectedPage("Users");
+                      return (
+                        <UserPage
+                          match={match}
+                          user_id={user ? user.id : null}
+                          history={history}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Users"
-                    component={() => (
-                      <UsersPage
-                        user_id={user ? user.id : null}
-                        history={history}
-                      />
-                    )}
+                    component={() => {
+                      setSelectedPage("Users");
+                      return (
+                        <UsersPage
+                          user_id={user ? user.id : null}
+                          history={history}
+                        />
+                      );
+                    }}
                   />
                   <Route
                     path="/Profile"
-                    component={() =>
-                      user ? (
+                    component={() => {
+                      setSelectedPage("Profile");
+                      return user ? (
                         <Dashboard
                           user_id={user ? user.id : null}
                           history={history}
                         />
                       ) : (
                         <Redirect to="/Projects" />
-                      )
-                    }
+                      );
+                    }}
                   />
 
                   <Route component={() => <h1>Route Not Found</h1>} />
@@ -181,10 +210,8 @@ function App({ history }) {
             <Grid.Column
               color="black"
               textAlign="center"
-              verticalAlign="middle"
-            >
-              <h1>Footer</h1>
-            </Grid.Column>
+              verticalAlign="bottom"
+            ></Grid.Column>
           </Grid.Row>
         </Grid>
       )}

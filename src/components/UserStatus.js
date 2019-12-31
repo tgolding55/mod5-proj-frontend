@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Menu } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-const UserStatus = ({ setUser, setSelectedPage, user }) => {
+const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
   return (
     <Menu widths="2">
       {user ? (
@@ -12,6 +12,7 @@ const UserStatus = ({ setUser, setSelectedPage, user }) => {
               onClick={() => {
                 localStorage.removeItem("token");
                 setUser(null);
+                history.push("/Projects");
               }}
             >
               Log out

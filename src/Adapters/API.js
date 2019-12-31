@@ -66,8 +66,9 @@ const validate = () =>
     .then(jsonify)
     .then(handleUserResp);
 
-const githubAuth = access_token =>
-  fetch(GITHUBAUTH_ENDPOINT, {
+const githubAuth = access_token => {
+  console.log(access_token);
+  return fetch(GITHUBAUTH_ENDPOINT, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
       Github: access_token
@@ -75,6 +76,7 @@ const githubAuth = access_token =>
   })
     .then(jsonify)
     .then(handleUserResp);
+};
 
 const getProjects = () => fetch(PROJECTS_ENDPOINT, auth()).then(jsonify);
 const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);

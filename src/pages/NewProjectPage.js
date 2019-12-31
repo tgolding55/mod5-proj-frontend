@@ -85,7 +85,7 @@ const NewProjectPage = ({ history }) => {
         name="title"
         value={newProject.title}
         label="Project Title"
-        placeholder="title"
+        placeholder="Title"
         onChange={handleChange}
       />
       <Form.Input
@@ -93,22 +93,25 @@ const NewProjectPage = ({ history }) => {
         name="technologies_used"
         required
         label="Project Technologies"
-        placeholder="for example: java, ruby on rails, websockets, etc"
+        placeholder="For example: java, ruby on rails, websockets, etc"
         value={newProject.technologies_used}
         onChange={handleChange}
       />
       <Form.TextArea
-        label="Project Desc"
+        label={"Project Description: " + newProject.description.length + "/300"}
         required
         placeholder="Description"
         name="description"
         value={newProject.description}
-        onChange={handleChange}
+        onChange={(e, attr) =>
+          attr.value.length <= 300 ? handleChange(e, attr) : null
+        }
       />
       <Form.Input
         required
-        label="Max Collabarators"
+        label="Max Collaborators"
         type="number"
+        placeholder="Number of collaborators"
         name="collaborator_size_limit"
         value={newProject.collaborator_size_limit}
         onChange={handleChange}
@@ -116,6 +119,7 @@ const NewProjectPage = ({ history }) => {
       <Form.Input
         required
         label="Timeframe"
+        placeholder="Number of weeks of work estimated"
         type="number"
         name="timeframe"
         value={newProject.timeframe}
