@@ -17,33 +17,38 @@ const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {
             setComment("");
           }}
         >
-          <Form.Field>
-            <label>content</label>
-            <input
-              placeholder="comment"
-              value={comment}
-              onChange={e => setComment(e.target.value)}
-            />
-          </Form.Field>
-          <Button type="submit">post</Button>
+          <Form.TextArea
+            required
+            label="New Comment"
+            placeholder="Write comment here..."
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
+          <Button
+            content="Add Comment"
+            labelPosition="middle"
+            icon="edit"
+            primary
+          />
         </Form>
       ) : (
         ""
       )}
-      <div style={{ width: "100%" }}>
-        <Comment.Group>
-          <Header as="h3" dividing>
-            Comments
-          </Header>
-          {comments.map(comment => (
-            <CommentCard
-              key={comment.comment_id + "comment"}
-              {...comment}
-              user_id={user_id}
-            />
-          ))}
-        </Comment.Group>
-      </div>
+
+      <Header as="h3" dividing>
+        Comments
+      </Header>
+      {comments.length ? (
+        comments.map(comment => (
+          <CommentCard
+            key={comment.comment_id + "comment"}
+            {...comment}
+            user_id={user_id}
+          />
+        ))
+      ) : (
+        <h4>This project has no comments</h4>
+      )}
     </Segment>
   );
 };

@@ -10,6 +10,7 @@ const COMMENTLIKE_ENDPOINT = API_ENDPOINT + "comment_likes";
 const USERLIKE_ENDPOINT = API_ENDPOINT + "like";
 const SEARCH_ENDPOINT = API_ENDPOINT + "search";
 const COLLABORATORS_ENDPOINT = API_ENDPOINT + "collaborators";
+const MESSAGES_ENDPOINT = API_ENDPOINT + "project_messages";
 
 const jsonify = resp => {
   return resp.json().then(data => {
@@ -130,6 +131,15 @@ const getRepos = page =>
     configObj("POST", { page: page }, true)
   ).then(jsonify);
 
+const getMessages = id =>
+  fetch(MESSAGES_ENDPOINT + "/" + id, auth()).then(jsonify);
+
+const createMessage = (content, id) =>
+  fetch(
+    MESSAGES_ENDPOINT,
+    configObj("POST", { message: { content, project_id: id } }, true)
+  ).then(jsonify);
+
 export default {
   signup,
   login,
@@ -150,5 +160,7 @@ export default {
   editProject,
   updateProject,
   createProjectRepo,
-  getRepos
+  getRepos,
+  getMessages,
+  createMessage
 };

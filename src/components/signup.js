@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import API from "../Adapters/API";
 import { useHistory } from "react-router-dom";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Message } from "semantic-ui-react";
 
-const Signup = ({ setUser, setLoading }) => {
+const Signup = ({ setUser }) => {
   const [signupUserField, setSignupUserField] = useState("");
   const [signupPasswordField, setSignupPasswordField] = useState("");
   const [signupBioField, setSignupBioField] = useState("");
+  const [errors, setErrors] = useState([]);
   const history = useHistory();
 
   return (
     <Form
       onSubmit={e => {
         e.preventDefault();
-        setLoading(true);
         API.signup({
           username: signupUserField,
           password: signupPasswordField,
@@ -21,46 +21,59 @@ const Signup = ({ setUser, setLoading }) => {
         })
           .then(user => {
             setUser(user);
-            setLoading(false);
             history.push("/Projects");
           })
           .catch(errors => {
-            alert(errors);
-            setLoading(false);
+            setErrors(errors);
           });
         setSignupPasswordField("");
         setSignupUserField("");
+        setSignupBioField("");
       }}
+      error
     >
-      <Form.Field>
-        <label>Username</label>
-        <input
-          placeholder="signup username"
-          value={signupUserField}
-          onChange={e => setSignupUserField(e.target.value)}
-        ></input>
-      </Form.Field>
-      <Form.Field>
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="signup password"
-          value={signupPasswordField}
-          onChange={e => setSignupPasswordField(e.target.value)}
-        ></input>
-      </Form.Field>
-      <Form.Field>
-        <label>Bio</label>
-        <input
-          type="text"
-          placeholder="bio"
+      {errors.length ? (
+        <Message error header="Error!" content={errors[0]} />
+      ) : (
+        ""
+      )}
+      <Form.Input
+        required
+        fluid
+        label="Username"
+        value={signupUserField}
+        onChange={e => setSignupUserField(e.target.value)}
+        placeholder="Username"
+      />
+      <Form.Input
+        required
+        fluid
+        label="Password"
+        type="password"
+        placeholder="Password"
+        value={signupPasswordField}
+        onChange={e => setSignupPasswordField(e.target.value)}
+      />
+
+      <Form.Field required>
+        <Form.TextArea
+          required
+          fluid
+          label={"Bio: " + signupBioField.length + "/300"}
+          placeholder="Bio"
           value={signupBioField}
-          onChange={e => setSignupBioField(e.target.value)}
-        ></input>
+          onChange={e =>
+            e.target.value.length <= 300
+              ? setSignupBioField(e.target.value)
+              : null
+          }
+        />
       </Form.Field>
+
       <Button type="submit">Sign Up</Button>
     </Form>
   );
 };
 
 export default Signup;
+

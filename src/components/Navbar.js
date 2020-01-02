@@ -25,7 +25,7 @@ const Navbar = ({
   );
 
   return (
-    <Menu>
+    <Menu stackable fluid>
       {options.map(option => menuItem(option))}
 
       {user && (
@@ -41,26 +41,28 @@ const Navbar = ({
         </Menu.Item>
       )}
 
-      <div style={{ width: "100%" }}></div>
-
-      <Menu.Item>
-        <Form
-          onSubmit={e => {
-            e.preventDefault();
-            setAppSearch(search);
-            history.push("/Search");
-            setSearch("");
-          }}
-        >
-          <Input
-            className="searchbar"
-            icon="search"
-            placeholder="Search projects/users..."
-            value={search}
-            onChange={(e, { value }) => setSearch(value)}
-          />
-        </Form>
-      </Menu.Item>
+      <Menu.Menu position="right">
+        <div>
+          <Menu.Item style={{ height: "100%" }}>
+            <Form
+              onSubmit={e => {
+                e.preventDefault();
+                setAppSearch(search);
+                history.push("/Search");
+                setSearch("");
+              }}
+            >
+              <Input
+                className="searchbar"
+                icon="search"
+                placeholder="Search..."
+                value={search}
+                onChange={(e, { value }) => setSearch(value)}
+              />
+            </Form>
+          </Menu.Item>
+        </div>
+      </Menu.Menu>
     </Menu>
   );
 };

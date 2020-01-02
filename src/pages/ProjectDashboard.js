@@ -8,7 +8,10 @@ import {
   Icon,
   Button,
   Dropdown,
-  Form
+  Form,
+  Modal,
+  Segment,
+  Divider
 } from "semantic-ui-react";
 import CommentsContainer from "../Containers/CommentsContainer";
 
@@ -31,6 +34,9 @@ const ProjectPage = ({
   const [projectLikes, setProjectLikes] = useState([]);
   const [status, setStatus] = useState("");
   const [projectDetails, setProjectDetails] = useState({ title: "" });
+  const [messages, setMessages] = useState([]);
+  const [content, setContent] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
   const init = () => {
     API.editProject(id)
       .then(projectObj => {
@@ -50,6 +56,16 @@ const ProjectPage = ({
     setComments(projectObj.comments);
     setProjectLikes(projectObj.project.project_likes);
     setProjectDetails({ title: projectObj.project.title });
+    startMessages(projectObj.messages);
+  };
+
+  const startMessages = messages => {
+    setMessages(messages);
+    setInterval(() => {
+      API.getMessages(id).then(newMessages =>
+        newMessages === messages ? null : setMessages(newMessages.messages)
+      );
+    }, 1000);
   };
 
   const iconHandler = e => {
@@ -61,25 +77,82 @@ const ProjectPage = ({
     );
   };
 
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+
   return project ? (
     <Grid>
       <Grid.Row>
-        <Form
-          onSubmit={e => {
-            e.preventDefault();
-            API.updateProject(id, status).then(projectObj =>
-              setProjectFromResp(projectObj)
-            );
-          }}
-        >
-          <Dropdown
-            value={status}
-            selection
-            options={options}
-            onChange={(e, { value }) => setStatus(value)}
-          ></Dropdown>
-          <Button type="submit">Change Status</Button>
-        </Form>
+        <Grid.Column>
+          <Modal
+            trigger={
+              <Button primary onClick={handleOpen}>
+                Open Chat
+              </Button>
+            }
+            open={modalOpen}
+            onClose={handleClose}
+          >
+            <Segment textAlign="center" style={{ height: "40%" }}>
+              <Form
+                onSubmit={e => {
+                  e.preventDefault();
+                  API.createMessage(content, id).then(newMessage =>
+                    setMessages([...messages, newMessage.message])
+                  );
+                  setContent("");
+                }}
+              >
+                <Form.Input
+                  required
+                  fluid
+                  name="content"
+                  value={content}
+                  label={project.title + "'s chat"}
+                  placeholder="Write Message Here"
+                  onChange={(e, { value }) => setContent(value)}
+                />
+              </Form>
+              <Divider />
+              {messages.length ? (
+                <div style={{ height: "20vh", overflowY: "scroll" }}>
+                  {messages.map(message => (
+                    <div>
+                      {message.user.username}: {message.content}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                "No Chat Messages"
+              )}
+              <Divider />
+
+              <Button color="green" onClick={handleClose} inverted>
+                <Icon name="checkmark" /> Close Chat
+              </Button>
+            </Segment>
+          </Modal>
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          <Form
+            onSubmit={e => {
+              e.preventDefault();
+              API.updateProject(id, status).then(projectObj =>
+                setProjectFromResp(projectObj)
+              );
+            }}
+          >
+            <Dropdown
+              value={status}
+              selection
+              options={options}
+              onChange={(e, { value }) => setStatus(value)}
+            ></Dropdown>
+            <Button type="submit">Change Status</Button>
+          </Form>
+        </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>

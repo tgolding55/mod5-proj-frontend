@@ -12,9 +12,11 @@ const ProjectCard = ({
   status,
   project_likes,
   user_id,
-  github_link,
   timeframe,
-  history
+  history,
+  projects,
+  setProjects,
+  sortType
 }) => {
   const [projectLikes, setProjectLikes] = useState([]);
   const init = () => {
@@ -24,15 +26,43 @@ const ProjectCard = ({
   const iconHandler = e => {
     e.stopPropagation();
     user_id
-      ? API.updateLike(id).then(({ user_like, liked }) =>
+      ? API.updateLike(id).then(({ user_like, liked }) => {
           liked
             ? setProjectLikes(
                 projectLikes.filter(like => like.id !== user_like.id)
               )
-            : setProjectLikes([...projectLikes, user_like])
-        )
+            : setProjectLikes([...projectLikes, user_like]);
+        })
       : alert("You must be signed in to use this!");
   };
+
+  const resetProject = () => {
+    if (sortType) {
+      const changedProject = projects.find(project => project.id === id);
+      changedProject.project_likes = projectLikes;
+
+      const newProjects = [
+        ...projects.filter(project => project.id !== id),
+        changedProject
+      ];
+      setProjects(
+        sortType === "new"
+          ? newProjects.sort((projectA, projectB) =>
+              new Date(projectA.created_at).getTime() <
+              new Date(projectB.created_at).getTime()
+                ? 1
+                : -1
+            )
+          : newProjects.sort((projectA, projectB) =>
+              projectA.project_likes.length < projectB.project_likes.length
+                ? 1
+                : -1
+            )
+      );
+    }
+  };
+
+  useEffect(resetProject, [projectLikes]);
 
   return (
     <Card onClick={() => history.push("/Projects/" + id)}>
@@ -40,7 +70,7 @@ const ProjectCard = ({
         <Card.Meta textAlign="left">
           {user_id ? (
             !!projectLikes.find(like => like.user_id === user_id) ? (
-              <Icon onClick={iconHandler} name="star"></Icon>
+              <Icon onClick={iconHandler} color="yellow" name="star"></Icon>
             ) : (
               <Icon onClick={iconHandler} name="star outline"></Icon>
             )
@@ -60,7 +90,7 @@ const ProjectCard = ({
         <Card.Meta>Built With: {technologies_used}</Card.Meta>
       </Card.Content>
       <Card.Content extra>
-        status: {status} | Collabarator Size: {collaborator_size}/
+        status: {status} | Collaborator Size: {collaborator_size}/
         {collaborator_size_limit}
       </Card.Content>
       {status !== "Completed" ? (
