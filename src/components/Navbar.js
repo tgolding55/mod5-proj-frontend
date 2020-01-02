@@ -25,7 +25,7 @@ const Navbar = ({
   );
 
   return (
-    <Menu size="large">
+    <Menu stackable fluid>
       {options.map(option => menuItem(option))}
 
       {user && (
@@ -43,7 +43,7 @@ const Navbar = ({
 
       <Menu.Menu position="right">
         <div>
-          <Menu.Item>
+          <Menu.Item style={{ height: "100%" }}>
             <Form
               onSubmit={e => {
                 e.preventDefault();
@@ -55,7 +55,7 @@ const Navbar = ({
               <Input
                 className="searchbar"
                 icon="search"
-                placeholder="Search projects/users..."
+                placeholder="Search..."
                 value={search}
                 onChange={(e, { value }) => setSearch(value)}
               />

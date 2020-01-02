@@ -13,3 +13,11 @@
   height: 67vh;
   overflow-y: scroll;
 }
+
+.heart:hover {
+  color: red;
+}
+
+.star:hover {
+  color: gold;
+}

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
   return (
-    <Menu widths="2">
+    <Menu widths="2" stackable>
       {user ? (
         <>
           <Menu.Item>

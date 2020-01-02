@@ -29,28 +29,38 @@ const SearchPage = ({ search, history, user_id }) => {
     </Dimmer>
   ) : !!Object.keys(results).length ? (
     <Grid>
-      <Grid.Row>
-        You searched for "{results.search}". We found {results.projects.length}{" "}
-        project
-        {results.projects.length === 1 ? "" : "s"} and {results.users.length}{" "}
-        user{results.users.length === 1 ? "" : "s"} that matches.
+      <Grid.Row centered>
+        <h2>
+          You searched for "{results.search}". We found{" "}
+          {results.projects.length} project
+          {results.projects.length === 1 ? "" : "s"} and {results.users.length}{" "}
+          user{results.users.length === 1 ? "" : "s"} that matches
+        </h2>
       </Grid.Row>
       <Grid.Row columns="2">
         <Grid.Column>
           <h2>Projects</h2>
-          <ProjectsContainer
-            projects={results.projects}
-            history={history}
-            user_id={user_id}
-          />
+          {results.projects.length ? (
+            <ProjectsContainer
+              projects={results.projects}
+              history={history}
+              user_id={user_id}
+            />
+          ) : (
+            <h4>No Projects Found</h4>
+          )}
         </Grid.Column>
         <Grid.Column>
           <h2>Users</h2>
-          <UsersContainer
-            users={results.users}
-            history={history}
-            user_id={user_id}
-          />
+          {results.users.length ? (
+            <UsersContainer
+              users={results.users}
+              history={history}
+              user_id={user_id}
+            />
+          ) : (
+            <h4>No Users Found</h4>
+          )}
         </Grid.Column>
       </Grid.Row>
     </Grid>

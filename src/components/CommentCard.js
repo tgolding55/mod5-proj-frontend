@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Comment, Icon } from "semantic-ui-react";
+import { Comment, Icon, Divider } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const CommentCard = ({ content, likes, user, comment_id, user_id }) => {
@@ -18,27 +18,41 @@ const CommentCard = ({ content, likes, user, comment_id, user_id }) => {
   };
   useEffect(init, []);
   return (
-    <Comment>
-      <Comment.Content>
-        <Comment.Metadata textAlign="left">
-          {user_id ? (
-            !!commentLikes.find(like => like.user_id === user_id) ? (
-              <Icon name="heart" onClick={handleClick} />
+    <>
+      <Comment>
+        <Comment.Content>
+          <Comment.Metadata textAlign="left">
+            {user_id ? (
+              !!commentLikes.find(like => like.user_id === user_id) ? (
+                <Icon
+                  name="heart"
+                  className="heart"
+                  color="red"
+                  onClick={handleClick}
+                />
+              ) : (
+                <Icon
+                  name="heart outline"
+                  className="heart"
+                  onClick={handleClick}
+                />
+              )
             ) : (
-              <Icon name="heart outline" onClick={handleClick} />
-            )
-          ) : (
-            <Icon
-              name="heart outline"
-              onClick={() => alert("You must be signed in to use this!")}
-            />
-          )}
-          {commentLikes.length}
-        </Comment.Metadata>
-        <Comment.Author>{user.username}</Comment.Author>
-        <Comment.Text>{content}</Comment.Text>
-      </Comment.Content>
-    </Comment>
+              <Icon
+                name="heart outline"
+                onClick={() => alert("You must be signed in to use this!")}
+              />
+            )}
+            {commentLikes.length}
+          </Comment.Metadata>
+
+          <Comment.Text>
+            {user.username}: {content}
+          </Comment.Text>
+        </Comment.Content>
+      </Comment>
+      <Divider />
+    </>
   );
 };
 

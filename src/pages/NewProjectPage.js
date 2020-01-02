@@ -5,7 +5,9 @@ import {
   Card,
   Segment,
   Pagination,
-  Button
+  Button,
+  Loader,
+  Dimmer
 } from "semantic-ui-react";
 import API from "../Adapters/API";
 
@@ -24,6 +26,8 @@ const NewProjectPage = ({ history }) => {
     status: "Planning",
     github_link: ""
   });
+  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState([]);
 
   const [repos, setRepos] = useState({
     page: "1",
@@ -32,7 +36,11 @@ const NewProjectPage = ({ history }) => {
   });
 
   const fetchRepos = (page = 1) => {
-    API.getRepos(page).then(reposObj => setRepos(reposObj));
+    setLoading(true);
+    API.getRepos(page).then(reposObj => {
+      setRepos(reposObj);
+      setLoading(false);
+    });
   };
 
   useEffect(fetchRepos, []);
@@ -42,43 +50,71 @@ const NewProjectPage = ({ history }) => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    API.newProject(newProject).then(projectObj =>
-      history.push("/Projects/" + projectObj.project.id)
-    );
+    API.newProject(newProject)
+      .then(projectObj => history.push("/Projects/" + projectObj.project.id))
+      .catch(errors => setErrors(errors));
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Segment>
-        <Card.Group style={{ height: "20vh", overflowY: "auto" }} centered>
-          {repos.repos.map(repo => (
-            <Card
-              onClick={() =>
-                setNewProject({
-                  planning: newProject.planning,
-                  title: repo.title,
-                  description: repo.description || "",
-                  technologies_used: repo.technologies_used,
-                  collaborator_size_limit: newProject.collaborator_size_limit,
-                  github_link: repo.github_link
-                })
-              }
-            >
-              <Card.Content>{repo.title}</Card.Content>
-            </Card>
-          ))}
-        </Card.Group>
+      <div>
         <Segment>
-          <Pagination
-            defaultActivePage={repos.page}
-            totalPages={repos.page_length}
-            pointing
-            secondary
-            onPageChange={(e, { activePage }) => fetchRepos(activePage)}
-          ></Pagination>
-        </Segment>
-      </Segment>
+          <h4>Your Github Repos</h4>
+          <Segment style={{ height: "20vh", overflowY: "auto" }}>
+            {loading ? (
+              <Dimmer active>
+                <Loader>Loading</Loader>
+              </Dimmer>
+            ) : (
+              <Card.Group centered>
+                {repos.repos.map(repo => (
+                  <Card
+                    onClick={() =>
+                      setNewProject({
+                        planning: newProject.planning,
+                        title: repo.title,
+                        description: repo.description || "",
+                        technologies_used: repo.technologies_used,
+                        collaborator_size_limit:
+                          newProject.collaborator_size_limit,
+                        github_link: repo.github_link
+                      })
+                    }
+                  >
+                    <Card.Content>{repo.title}</Card.Content>
+                  </Card>
+                ))}
+              </Card.Group>
+            )}
+          </Segment>
 
+          <Segment style={{ overflowX: "scroll" }}>
+            <Pagination
+              defaultActivePage={repos.page}
+              totalPages={repos.page_length}
+              boundaryRange={0}
+              ellipsisItem={null}
+              firstItem={null}
+              lastItem={null}
+              siblingRange={1}
+              pointing
+              secondary
+              onPageChange={(e, { activePage }) => fetchRepos(activePage)}
+            ></Pagination>
+          </Segment>
+        </Segment>
+      </div>
+
+      {errors.length ? (
+        <Segment>
+          <h3>Errors!</h3>
+          {errors.map(error => (
+            <h4>{error}</h4>
+          ))}
+        </Segment>
+      ) : (
+        ""
+      )}
       <Form.Input
         required
         fluid
@@ -151,7 +187,6 @@ const NewProjectPage = ({ history }) => {
           Clear Github URL
         </Button>
       </Form.Field>
-
       <Form.Button>Submit</Form.Button>
     </Form>
   );

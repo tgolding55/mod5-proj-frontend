@@ -10,7 +10,10 @@ const UserCard = ({
   likees,
   user_id,
   history,
-  role = null
+  role = null,
+  sortType,
+  setUsers,
+  users
 }) => {
   const [userLikees, setUserLikees] = useState([]);
   const handleLike = e => {
@@ -21,6 +24,27 @@ const UserCard = ({
   const init = () => {
     setUserLikees(likees);
   };
+
+  const resetUser = () => {
+    if (sortType) {
+      const changedUser = users.find(user => user.id === id);
+      changedUser.likees = userLikees;
+      const newUsers = [...users.filter(user => user.id !== id), changedUser];
+      setUsers(
+        sortType === "new"
+          ? newUsers.sort((userA, userB) =>
+              new Date(userA.created_at).getTime() <
+              new Date(userB.created_at).getTime()
+                ? 1
+                : -1
+            )
+          : newUsers.sort((userA, userB) =>
+              userA.likees.length < userB.likees.length ? 1 : -1
+            )
+      );
+    }
+  };
+  useEffect(resetUser, [userLikees]);
   useEffect(init, []);
   return (
     <Card onClick={() => history.push("/Users/" + id)}>
@@ -30,9 +54,19 @@ const UserCard = ({
             <Grid.Column floated="left" textAlign="left" verticalAlign="left">
               {user_id ? (
                 userLikees.find(likee => likee.id === user_id) ? (
-                  <Icon name="heart" color="red" onClick={handleLike}></Icon>
+                  <Icon
+                    onClick={handleLike}
+                    className="heart"
+                    
+                    name="heart"
+                    color="red"
+                  ></Icon>
                 ) : (
-                  <Icon name="heart outline" onClick={handleLike}></Icon>
+                  <Icon
+                    onClick={handleLike}
+                    className="heart"
+                    name="heart outline"
+                  ></Icon>
                 )
               ) : (
                 <Icon

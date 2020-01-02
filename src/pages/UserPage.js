@@ -29,9 +29,18 @@ const UserPage = ({
     <div>
       {user_id ? (
         userLikees.find(likee => likee.id === user_id) ? (
-          <Icon name="heart" color="red" onClick={handleLike}></Icon>
+          <Icon
+            name="heart"
+            color="red"
+            className="heart"
+            onClick={handleLike}
+          ></Icon>
         ) : (
-          <Icon name="heart outline" onClick={handleLike}></Icon>
+          <Icon
+            name="heart outline"
+            className="heart"
+            onClick={handleLike}
+          ></Icon>
         )
       ) : (
         <Icon
@@ -45,11 +54,15 @@ const UserPage = ({
       {userLikees.length}
       <h1>{user.username}</h1>
       <p>{user.bio}</p>
-      <ProjectsContainer
-        projects={projects}
-        user_id={user_id}
-        history={history}
-      />
+      {projects.length ? (
+        <ProjectsContainer
+          projects={projects}
+          user_id={user_id}
+          history={history}
+        />
+      ) : (
+        <h3>{user.username} is not a part of any projects</h3>
+      )}
     </div>
   ) : (
     <Dimmer active>

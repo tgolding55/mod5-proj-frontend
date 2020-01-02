@@ -40,8 +40,8 @@ function App({ history }) {
           <Loader>Loading</Loader>
         </Dimmer>
       ) : (
-        <Grid id="layout" padded relaxed>
-          <Grid.Row columns="1" verticalAlign="top" style={{ height: "10vh" }}>
+        <Grid id="layout" padded relaxed stackable fluid>
+          <Grid.Row columns="1" verticalAlign="top">
             <Grid.Column
               color="black"
               textAlign="center"
@@ -51,7 +51,7 @@ function App({ history }) {
               <h1>Collabapage</h1>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns="2" className="navbar" style={{ height: "10vh" }}>
+          <Grid.Row columns="2" className="navbar">
             <Grid.Column id="navbar" stretched>
               <Navbar
                 user={user}
@@ -201,12 +201,7 @@ function App({ history }) {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row
-            columns="1"
-            verticalAlign="bottom"
-            stretched
-            style={{ height: "10vh" }}
-          >
+          <Grid.Row columns="1" verticalAlign="bottom" stretched>
             <Grid.Column
               color="black"
               textAlign="center"

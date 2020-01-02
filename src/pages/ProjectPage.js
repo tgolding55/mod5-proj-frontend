@@ -54,9 +54,18 @@ const ProjectPage = ({
           <h1>{project.status}</h1>
           {user_id ? (
             !!projectLikes.find(like => like.user_id === user_id) ? (
-              <Icon onClick={iconHandler} name="star"></Icon>
+              <Icon
+                onClick={iconHandler}
+                color="yellow"
+                className="star"
+                name="star"
+              ></Icon>
             ) : (
-              <Icon onClick={iconHandler} name="star outline"></Icon>
+              <Icon
+                onClick={iconHandler}
+                className="star"
+                name="star outline"
+              ></Icon>
             )
           ) : (
             <Icon
