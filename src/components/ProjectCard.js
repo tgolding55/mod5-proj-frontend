@@ -65,7 +65,7 @@ const ProjectCard = ({
   useEffect(resetProject, [projectLikes]);
 
   return (
-    <Card onClick={() => history.push("/Projects/" + id)}>
+    <Card onClick={() => history.push("/Projects/" + id)} className="card">
       <Card.Content>
         <Card.Meta textAlign="left">
           {user_id ? (
@@ -90,7 +90,7 @@ const ProjectCard = ({
         <Card.Meta>Built With: {technologies_used}</Card.Meta>
       </Card.Content>
       <Card.Content extra>
-        status: {status} | Collaborator Size: {collaborator_size}/
+        Status: {status} | Collaborator Size: {collaborator_size}/
         {collaborator_size_limit}
       </Card.Content>
       {status !== "Completed" ? (

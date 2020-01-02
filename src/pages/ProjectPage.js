@@ -45,7 +45,10 @@ const ProjectPage = ({
       <Grid.Row>
         <Grid.Column>
           {!!collabarators.find(collaborator => collaborator.id === user_id) ? (
-            <Button onClick={() => history.push("/Projects/" + id + "/edit")}>
+            <Button
+              primary
+              onClick={() => history.push("/Projects/" + id + "/edit")}
+            >
               Manage
             </Button>
           ) : (
@@ -82,7 +85,9 @@ const ProjectPage = ({
           <h3>Made with {project.technologies_used}</h3>
           <p>{project.description}</p>
           {project.github_link ? (
-            <Button href={project.github_link}>View On Github!</Button>
+            <Button href={project.github_link} primary>
+              View On Github!
+            </Button>
           ) : (
             ""
           )}
@@ -93,7 +98,7 @@ const ProjectPage = ({
                 {project.collaborator_size_limit}
               </Button>
             ) : (
-              <Button onClick={joinProject}>
+              <Button onClick={joinProject} primary>
                 Join Project - {collabarators.length}/
                 {project.collaborator_size_limit}
               </Button>

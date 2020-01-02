@@ -21,3 +21,11 @@
 .star:hover {
   color: gold;
 }
+
+.card {
+  word-wrap: break-word;
+}
+
+.clickable {
+  cursor: pointer;
+}

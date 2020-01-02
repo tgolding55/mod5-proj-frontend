@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import API from "../Adapters/API";
 import ProjectsContainer from "../Containers/ProjectsContainer";
-import { Dimmer, Loader, Icon, Grid } from "semantic-ui-react";
+import { Dimmer, Loader, Icon, Grid, Form } from "semantic-ui-react";
 import UsersContainer from "../Containers/UsersContainer";
 
 const Dashboard = ({ user_id, history }) => {
   const [user, setUser] = useState({});
+  const [userEdit, setUserEdit] = useState({});
   const [projects, setProjects] = useState([]);
   const [userLikees, setUserLikees] = useState([]);
   const [likedProjects, setLikedProjects] = useState([]);
+  const [nameEdit, setNameEdit] = useState(false);
+  const [bioEdit, setBioEdit] = useState(false);
   const handleLike = e => {
     e.preventDefault();
     API.updateUserLike(user.id).then(resp => setUserLikees(resp));
@@ -16,14 +19,30 @@ const Dashboard = ({ user_id, history }) => {
   const init = () => {
     API.getDashboard().then(userObj => {
       setUser(userObj.user);
+      setUserEdit(userObj.user);
       setProjects(userObj.projects);
       setUserLikees(userObj.liked_users);
       setLikedProjects(userObj.liked_projects);
     });
   };
+
+  const update = () => {
+    API.updateUser(userEdit)
+      .then(userObj => {
+        setUser(userObj.user);
+        setUserEdit(userObj.user);
+      })
+      .catch(errors => setUserEdit(user));
+  };
+
   useEffect(init, []);
   return user ? (
-    <>
+    <div
+      onClick={() => {
+        setNameEdit(false);
+        setBioEdit(false);
+      }}
+    >
       <div>
         {userLikees.find(likee => likee.id === user_id) ? (
           <Icon name="heart" color="red" onClick={handleLike}></Icon>
@@ -31,8 +50,60 @@ const Dashboard = ({ user_id, history }) => {
           <Icon name="heart outline" onClick={handleLike}></Icon>
         )}
         {userLikees.length}
-        <h1>{user.username}</h1>
-        <p>{user.bio}</p>
+        {nameEdit ? (
+          <Form
+            onSubmit={() => {
+              setNameEdit(false);
+              update();
+            }}
+          >
+            <Form.Input
+              onClick={e => e.stopPropagation()}
+              style={{ width: "auto" }}
+              required
+              value={userEdit.username}
+              onChange={(e, { value }) =>
+                setUserEdit({ ...user, username: value })
+              }
+            ></Form.Input>
+          </Form>
+        ) : (
+          <h1
+            className="clickable"
+            onClick={e => {
+              e.stopPropagation();
+              setNameEdit(true);
+            }}
+          >
+            {user.username}
+          </h1>
+        )}
+        {bioEdit ? (
+          <Form
+            onSubmit={() => {
+              setBioEdit(false);
+              update();
+            }}
+          >
+            <Form.Input
+              onClick={e => e.stopPropagation()}
+              style={{ width: "auto" }}
+              required
+              value={userEdit.bio}
+              onChange={(e, { value }) => setUserEdit({ ...user, bio: value })}
+            ></Form.Input>
+          </Form>
+        ) : (
+          <p
+            className="clickable"
+            onClick={e => {
+              e.stopPropagation();
+              setBioEdit(true);
+            }}
+          >
+            {user.bio}
+          </p>
+        )}
 
         {projects.length ? (
           <ProjectsContainer
@@ -44,7 +115,7 @@ const Dashboard = ({ user_id, history }) => {
           <h3>You are not a part of any projects</h3>
         )}
       </div>
-      <Grid>
+      <Grid stackable>
         <Grid.Row columns="2">
           <Grid.Column>
             <h2>Liked Projects</h2>
@@ -72,7 +143,7 @@ const Dashboard = ({ user_id, history }) => {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-    </>
+    </div>
   ) : (
     <Dimmer active>
       <Loader>Loading</Loader>

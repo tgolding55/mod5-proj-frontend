@@ -3,7 +3,7 @@ import "./App.css";
 import queryString from "querystring";
 import { Route, Switch, Redirect } from "react-router-dom";
 import API from "./Adapters/API";
-import { Dimmer, Loader, Grid, Segment, Icon } from "semantic-ui-react";
+import { Dimmer, Loader, Grid, Segment } from "semantic-ui-react";
 import UserStatus from "./components/UserStatus";
 import Navbar from "./components/Navbar";
 import SignupPage from "./pages/SignupPage";

@@ -16,9 +16,12 @@ const ProjectsPage = ({ user_id, github_linked, history }) => {
     <Grid>
       <Grid.Row columns="1">
         <Grid.Column>
-          <Menu>
+          <Menu stackable>
             {github_linked && (
-              <Menu.Item onClick={() => history.push("/Projects/New")}>
+              <Menu.Item
+                style={{ color: "white", backgroundColor: "rgb(56, 170, 49)" }}
+                onClick={() => history.push("/Projects/New")}
+              >
                 New Project
               </Menu.Item>
             )}
