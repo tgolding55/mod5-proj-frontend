@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Icon, Grid } from "semantic-ui-react";
+import { Card, Icon, Grid, Modal, Button, Header } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const UserCard = ({
@@ -16,6 +16,8 @@ const UserCard = ({
   users
 }) => {
   const [userLikees, setUserLikees] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
   const handleLike = e => {
     e.stopPropagation();
     API.updateUserLike(id).then(resp => setUserLikees(resp));
@@ -57,7 +59,6 @@ const UserCard = ({
                   <Icon
                     onClick={handleLike}
                     className="heart"
-                    
                     name="heart"
                     color="red"
                   ></Icon>
@@ -69,13 +70,33 @@ const UserCard = ({
                   ></Icon>
                 )
               ) : (
-                <Icon
-                  name="heart outline"
-                  onClick={e => {
-                    e.stopPropagation();
-                    alert("You must be logged in to do that!");
-                  }}
-                />
+                <>
+                  <Icon
+                    name="heart outline"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setOpenModal(true);
+                    }}
+                  />
+                  <Modal open={openModal} basic size="small" color="green">
+                    <Header icon="browser">Error!</Header>
+                    <Modal.Content>
+                      <h3>You must be signed in to use this!</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button
+                        color="green"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setOpenModal(false);
+                        }}
+                        inverted
+                      >
+                        <Icon name="checkmark" /> Ok!
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </>
               )}
               {userLikees.length}
             </Grid.Column>

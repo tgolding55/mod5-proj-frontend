@@ -9,12 +9,13 @@ const Dashboard = ({ user_id, history }) => {
   const [userEdit, setUserEdit] = useState({});
   const [projects, setProjects] = useState([]);
   const [userLikees, setUserLikees] = useState([]);
+  const [userLiking, setUserLikings] = useState([]);
   const [likedProjects, setLikedProjects] = useState([]);
   const [nameEdit, setNameEdit] = useState(false);
   const [bioEdit, setBioEdit] = useState(false);
   const handleLike = e => {
     e.preventDefault();
-    API.updateUserLike(user.id).then(resp => setUserLikees(resp));
+    API.updateUserLike(user.id).then(resp => setUserLikings(resp));
   };
   const init = () => {
     API.getDashboard().then(userObj => {
@@ -22,6 +23,7 @@ const Dashboard = ({ user_id, history }) => {
       setUserEdit(userObj.user);
       setProjects(userObj.projects);
       setUserLikees(userObj.liked_users);
+      setUserLikings(userObj.liking_users);
       setLikedProjects(userObj.liked_projects);
     });
   };
@@ -44,12 +46,12 @@ const Dashboard = ({ user_id, history }) => {
       }}
     >
       <div>
-        {userLikees.find(likee => likee.id === user_id) ? (
+        {userLiking.find(likee => likee.id === user_id) ? (
           <Icon name="heart" color="red" onClick={handleLike}></Icon>
         ) : (
           <Icon name="heart outline" onClick={handleLike}></Icon>
         )}
-        {userLikees.length}
+        {userLiking.length}
         {nameEdit ? (
           <Form
             onSubmit={() => {

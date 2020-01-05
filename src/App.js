@@ -48,7 +48,12 @@ function App({ history }) {
               fluid="true"
               stretched
             >
-              <h1>Collabapage</h1>
+              <h1
+                className="clickable"
+                onClick={() => history.push("/Projects")}
+              >
+                Collabapage
+              </h1>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns="2" className="navbar">

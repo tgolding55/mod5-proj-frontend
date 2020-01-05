@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Icon } from "semantic-ui-react";
+import { Card, Icon, Modal, Button, Header } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const ProjectCard = ({
@@ -19,6 +19,7 @@ const ProjectCard = ({
   sortType
 }) => {
   const [projectLikes, setProjectLikes] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
   const init = () => {
     setProjectLikes(project_likes);
   };
@@ -75,13 +76,33 @@ const ProjectCard = ({
               <Icon onClick={iconHandler} name="star outline"></Icon>
             )
           ) : (
-            <Icon
-              onClick={e => {
-                e.stopPropagation();
-                alert("You must be signed in to use this!");
-              }}
-              name="star outline"
-            />
+            <>
+              <Icon
+                onClick={e => {
+                  e.stopPropagation();
+                  setOpenModal(true);
+                }}
+                name="star outline"
+              />
+              <Modal open={openModal} basic size="small" color="green">
+                <Header icon="browser">Error!</Header>
+                <Modal.Content>
+                  <h3>You must be signed in to use this!</h3>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button
+                    color="green"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setOpenModal(false);
+                    }}
+                    inverted
+                  >
+                    <Icon name="checkmark" /> Ok!
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </>
           )}
           {projectLikes.length}
         </Card.Meta>
