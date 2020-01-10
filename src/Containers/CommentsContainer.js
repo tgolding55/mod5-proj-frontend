@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CommentCard from "../components/CommentCard";
-import { Comment, Segment, Form, Button, Header } from "semantic-ui-react";
+import { Segment, Form, Button, Header } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const CommentsContainer = ({ comments, project_id, setComments, user_id }) => {

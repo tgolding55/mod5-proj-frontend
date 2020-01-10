@@ -70,10 +70,11 @@ const Signup = ({ setUser }) => {
         />
       </Form.Field>
 
-      <Button type="submit">Sign Up</Button>
+      <Button primary type="submit">
+        Sign Up
+      </Button>
     </Form>
   );
 };
 
 export default Signup;
-

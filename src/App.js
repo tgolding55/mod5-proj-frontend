@@ -3,7 +3,7 @@ import "./App.css";
 import queryString from "querystring";
 import { Route, Switch, Redirect } from "react-router-dom";
 import API from "./Adapters/API";
-import { Dimmer, Loader, Grid, Segment, Icon } from "semantic-ui-react";
+import { Dimmer, Loader, Grid, Segment } from "semantic-ui-react";
 import UserStatus from "./components/UserStatus";
 import Navbar from "./components/Navbar";
 import SignupPage from "./pages/SignupPage";
@@ -48,7 +48,12 @@ function App({ history }) {
               fluid="true"
               stretched
             >
-              <h1>Collabapage</h1>
+              <h1
+                className="clickable"
+                onClick={() => history.push("/Projects")}
+              >
+                Collabapage
+              </h1>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns="2" className="navbar">

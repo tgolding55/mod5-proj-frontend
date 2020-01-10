@@ -1,8 +1,8 @@
-const API_ENDPOINT = "http://localhost:3001/api/v1/";
+const API_ENDPOINT = "http://165.22.123.91:3001/api/v1/";
 const USERS_ENDPOINT = API_ENDPOINT + "users";
 const LOGIN_ENDPOINT = API_ENDPOINT + "login";
 const VALIDATE_ENDPOINT = API_ENDPOINT + "validate";
-const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
+const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubA uth";
 const PROJECTS_ENDPOINT = API_ENDPOINT + "projects";
 const COMMENTS_ENDPOINT = API_ENDPOINT + "project_comments";
 const ME_ENDPOINT = API_ENDPOINT + "me";
@@ -80,11 +80,18 @@ const getProjects = () => fetch(PROJECTS_ENDPOINT, auth()).then(jsonify);
 const getProject = id => fetch(PROJECTS_ENDPOINT + "/" + id).then(jsonify);
 const editProject = id =>
   fetch(PROJECTS_ENDPOINT + "/" + id + "/edit", auth()).then(jsonify);
-const updateProject = (id, status) =>
+const updateProject = project =>
   fetch(
-    PROJECTS_ENDPOINT + "/" + id,
-    configObj("PATCH", { status }, auth)
+    PROJECTS_ENDPOINT + "/" + project.id,
+    configObj("PATCH", project, auth())
   ).then(jsonify);
+
+const updateUser = user =>
+  fetch(
+    USERS_ENDPOINT + "/" + user.id,
+    configObj("PATCH", { user }, auth())
+  ).then(jsonify);
+
 const getUsers = () => fetch(USERS_ENDPOINT).then(jsonify);
 const getUser = id => fetch(USERS_ENDPOINT + "/" + id).then(jsonify);
 
@@ -162,5 +169,6 @@ export default {
   createProjectRepo,
   getRepos,
   getMessages,
-  createMessage
+  createMessage,
+  updateUser
 };

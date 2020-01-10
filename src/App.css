@@ -16,8 +16,18 @@
 
 .heart:hover {
   color: red;
+  cursor: pointer;
 }
 
 .star:hover {
+  cursor: pointer;
   color: gold;
+}
+
+.card {
+  word-wrap: break-word;
+}
+
+.clickable {
+  cursor: pointer;
 }

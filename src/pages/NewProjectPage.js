@@ -182,12 +182,13 @@ const NewProjectPage = ({ history }) => {
           value={newProject.github_link}
         ></Form.Input>
         <Button
+          primary
           onClick={() => setNewProject({ ...newProject, github_link: "" })}
         >
           Clear Github URL
         </Button>
       </Form.Field>
-      <Form.Button>Submit</Form.Button>
+      <Form.Button primary>Submit</Form.Button>
     </Form>
   );
 };

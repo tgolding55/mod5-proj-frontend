@@ -9,6 +9,7 @@ const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
         <>
           <Menu.Item>
             <Button
+              primary
               onClick={() => {
                 localStorage.removeItem("token");
                 setUser(null);
@@ -25,7 +26,7 @@ const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
             </Menu.Item>
           ) : (
             <Menu.Item>
-              <Button href="http://localhost:3001/auth/github">
+              <Button primary href="http://165.22.123.91:3001/auth/github">
                 Link Github
               </Button>
             </Menu.Item>
@@ -35,13 +36,17 @@ const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
         <>
           <Menu.Item>
             <Link to="/Login">
-              <Button onClick={() => setSelectedPage("login")}>Login</Button>
+              <Button primary onClick={() => setSelectedPage("login")}>
+                Login
+              </Button>
             </Link>
           </Menu.Item>
 
           <Menu.Item>
             <Link to="/Signup">
-              <Button onClick={() => setSelectedPage("signup")}>Sign Up</Button>
+              <Button primary onClick={() => setSelectedPage("signup")}>
+                Sign Up
+              </Button>
             </Link>
           </Menu.Item>
         </>

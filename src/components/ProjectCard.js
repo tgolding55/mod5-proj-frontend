@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Icon } from "semantic-ui-react";
+import { Card, Icon, Modal, Button, Header } from "semantic-ui-react";
 import API from "../Adapters/API";
 
 const ProjectCard = ({
@@ -19,6 +19,7 @@ const ProjectCard = ({
   sortType
 }) => {
   const [projectLikes, setProjectLikes] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
   const init = () => {
     setProjectLikes(project_likes);
   };
@@ -65,7 +66,7 @@ const ProjectCard = ({
   useEffect(resetProject, [projectLikes]);
 
   return (
-    <Card onClick={() => history.push("/Projects/" + id)}>
+    <Card onClick={() => history.push("/Projects/" + id)} className="card">
       <Card.Content>
         <Card.Meta textAlign="left">
           {user_id ? (
@@ -75,13 +76,33 @@ const ProjectCard = ({
               <Icon onClick={iconHandler} name="star outline"></Icon>
             )
           ) : (
-            <Icon
-              onClick={e => {
-                e.stopPropagation();
-                alert("You must be signed in to use this!");
-              }}
-              name="star outline"
-            />
+            <>
+              <Icon
+                onClick={e => {
+                  e.stopPropagation();
+                  setOpenModal(true);
+                }}
+                name="star outline"
+              />
+              <Modal open={openModal} basic size="small" color="green">
+                <Header icon="browser">Error!</Header>
+                <Modal.Content>
+                  <h3>You must be signed in to use this!</h3>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button
+                    color="green"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setOpenModal(false);
+                    }}
+                    inverted
+                  >
+                    <Icon name="checkmark" /> Ok!
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </>
           )}
           {projectLikes.length}
         </Card.Meta>
@@ -90,7 +111,7 @@ const ProjectCard = ({
         <Card.Meta>Built With: {technologies_used}</Card.Meta>
       </Card.Content>
       <Card.Content extra>
-        status: {status} | Collaborator Size: {collaborator_size}/
+        Status: {status} | Collaborator Size: {collaborator_size}/
         {collaborator_size_limit}
       </Card.Content>
       {status !== "Completed" ? (

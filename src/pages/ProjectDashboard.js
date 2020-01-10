@@ -28,15 +28,19 @@ const ProjectPage = ({
   user_id,
   history
 }) => {
-  const [project, setProject] = useState([]);
+  const [project, setProject] = useState({});
+  const [projectEdit, setProjectEdit] = useState({});
   const [collabarators, setCollabarators] = useState([]);
   const [comments, setComments] = useState([]);
   const [projectLikes, setProjectLikes] = useState([]);
-  const [status, setStatus] = useState("");
   const [projectDetails, setProjectDetails] = useState({ title: "" });
   const [messages, setMessages] = useState([]);
   const [content, setContent] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [titleEdit, setTitleEdit] = useState(false);
+  const [technologyEdit, setTechnologyEdit] = useState(false);
+  const [descEdit, setDescEdit] = useState(false);
+  const [timeframeEdit, setTimeframeEdit] = useState(false);
   const init = () => {
     API.editProject(id)
       .then(projectObj => {
@@ -51,14 +55,13 @@ const ProjectPage = ({
 
   const setProjectFromResp = projectObj => {
     setProject(projectObj.project);
-    setStatus(projectObj.project.status);
+    setProjectEdit(projectObj.project);
     setCollabarators(projectObj.collaborators);
     setComments(projectObj.comments);
     setProjectLikes(projectObj.project.project_likes);
     setProjectDetails({ title: projectObj.project.title });
     startMessages(projectObj.messages);
   };
-
   const startMessages = messages => {
     setMessages(messages);
     setInterval(() => {
@@ -77,11 +80,24 @@ const ProjectPage = ({
     );
   };
 
+  const update = () => {
+    API.updateProject(projectEdit)
+      .then(projectObj => setProjectFromResp(projectObj))
+      .catch(errors => setProjectEdit(project));
+  };
+
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
   return project ? (
-    <Grid>
+    <Grid
+      onClick={() => {
+        setTitleEdit(false);
+        setTechnologyEdit(false);
+        setDescEdit(false);
+        setTimeframeEdit(false);
+      }}
+    >
       <Grid.Row>
         <Grid.Column>
           <Modal
@@ -139,18 +155,20 @@ const ProjectPage = ({
           <Form
             onSubmit={e => {
               e.preventDefault();
-              API.updateProject(id, status).then(projectObj =>
-                setProjectFromResp(projectObj)
-              );
+              update();
             }}
           >
             <Dropdown
-              value={status}
+              value={projectEdit.status}
               selection
               options={options}
-              onChange={(e, { value }) => setStatus(value)}
+              onChange={(e, { value }) => {
+                setProjectEdit({ ...project, status: value });
+              }}
             ></Dropdown>
-            <Button type="submit">Change Status</Button>
+            <Button primary type="submit">
+              Change Status
+            </Button>
           </Form>
         </Grid.Column>
       </Grid.Row>
@@ -158,12 +176,23 @@ const ProjectPage = ({
         <Grid.Column>
           {user_id ? (
             !!projectLikes.find(like => like.user_id === user_id) ? (
-              <Icon onClick={iconHandler} name="star"></Icon>
+              <Icon
+                onClick={iconHandler}
+                className="star"
+                color="yellow"
+                name="star"
+              ></Icon>
             ) : (
-              <Icon onClick={iconHandler} name="star outline"></Icon>
+              <Icon
+                onClick={iconHandler}
+                className="star"
+                name="star outline"
+              ></Icon>
             )
           ) : (
             <Icon
+              className="star"
+              color="yellow"
               onClick={e => {
                 e.preventDefault();
                 alert("You must be signed in to use this!");
@@ -172,36 +201,147 @@ const ProjectPage = ({
             />
           )}
           {projectLikes.length}
-          <h1>{project.title}</h1>
-          <h3>Made with {project.technologies_used}</h3>
-          <p>{project.description}</p>
+          {titleEdit ? (
+            <Form
+              onSubmit={() => {
+                setTitleEdit(false);
+                update();
+              }}
+            >
+              <Form.Input
+                onClick={e => e.stopPropagation()}
+                style={{ width: "auto" }}
+                required
+                value={projectEdit.title}
+                onChange={(e, { value }) =>
+                  setProjectEdit({ ...project, title: value })
+                }
+              ></Form.Input>
+            </Form>
+          ) : (
+            <h1
+              className="clickable"
+              onClick={e => {
+                e.stopPropagation();
+                setTitleEdit(true);
+              }}
+            >
+              {project.title}
+            </h1>
+          )}
+          {technologyEdit ? (
+            <Form
+              onSubmit={() => {
+                setTechnologyEdit(false);
+                update();
+              }}
+            >
+              <Form.Input
+                style={{ width: "auto" }}
+                onClick={e => e.stopPropagation()}
+                required
+                value={projectEdit.technologies_used}
+                onChange={(e, { value }) =>
+                  setProjectEdit({ ...project, technologies_used: value })
+                }
+              ></Form.Input>
+            </Form>
+          ) : (
+            <h3
+              className="clickable"
+              onClick={e => {
+                e.stopPropagation();
+                setTechnologyEdit(true);
+              }}
+            >
+              Made with {project.technologies_used}
+            </h3>
+          )}
+          {descEdit ? (
+            <Form
+              onSubmit={() => {
+                setDescEdit(false);
+                update();
+              }}
+            >
+              <Form.Input
+                onClick={e => e.stopPropagation()}
+                style={{ width: "auto" }}
+                required
+                value={projectEdit.description}
+                onChange={(e, { value }) =>
+                  setProjectEdit({ ...project, description: value })
+                }
+              ></Form.Input>
+            </Form>
+          ) : (
+            <p
+              className="clickable"
+              onClick={e => {
+                e.stopPropagation();
+                setDescEdit(true);
+              }}
+            >
+              {project.description}
+            </p>
+          )}
           {project.github_link ? (
-            <Button href={project.github_link}>View On Github!</Button>
+            <Button primary href={project.github_link}>
+              View On Github!
+            </Button>
           ) : (
             <Form
               onSubmit={e => {
                 e.preventDefault();
                 API.createProjectRepo(id, projectDetails).then(projectObj =>
-                  setProject(projectObj.project)
+                  setProjectEdit(projectObj.project)
                 );
               }}
             >
               <label>Create Github Repo</label>
               <Form.Input
+                required
                 label="Title"
                 value={projectDetails.title}
                 onChange={(e, { value }) => setProjectDetails({ title: value })}
               />
-              <Button type="submit">New Repo</Button>
+              <Button primary type="submit">
+                New Repo
+              </Button>
             </Form>
           )}
           <Button disabled>
             {collabarators.length}/{project.collaborator_size_limit}
           </Button>
-          {project.status !== "Completed" ? (
-            <h3>timeframe: {project.timeframe} weeks</h3>
+
+          {timeframeEdit ? (
+            <Form
+              onSubmit={() => {
+                setTimeframeEdit(false);
+                update();
+              }}
+            >
+              <Form.Input
+                style={{ width: "auto" }}
+                onClick={e => e.stopPropagation()}
+                required
+                type="number"
+                value={projectEdit.timeframe}
+                onChange={(e, { value }) =>
+                  setProjectEdit({ ...project, timeframe: value })
+                }
+              ></Form.Input>
+            </Form>
           ) : (
-            ""
+            <h3
+              className="clickable"
+              onClick={e => {
+                e.stopPropagation();
+                setTimeframeEdit(true);
+              }}
+            >
+              Timeframe - {project.timeframe} weeks
+            </h3>
           )}
         </Grid.Column>
       </Grid.Row>

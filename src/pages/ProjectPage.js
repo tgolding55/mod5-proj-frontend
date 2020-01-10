@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import API from "../Adapters/API";
 import UsersContainer from "../Containers/UsersContainer";
-import { Dimmer, Loader, Grid, Icon, Button } from "semantic-ui-react";
+import {
+  Dimmer,
+  Loader,
+  Grid,
+  Icon,
+  Modal,
+  Button,
+  Header
+} from "semantic-ui-react";
 import CommentsContainer from "../Containers/CommentsContainer";
 
 const ProjectPage = ({
@@ -16,6 +24,8 @@ const ProjectPage = ({
   const [collabarators, setCollabarators] = useState([]);
   const [comments, setComments] = useState([]);
   const [projectLikes, setProjectLikes] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
   const init = () => {
     API.getProject(id).then(projectObj => {
       setProject(projectObj.project);
@@ -45,7 +55,10 @@ const ProjectPage = ({
       <Grid.Row>
         <Grid.Column>
           {!!collabarators.find(collaborator => collaborator.id === user_id) ? (
-            <Button onClick={() => history.push("/Projects/" + id + "/edit")}>
+            <Button
+              primary
+              onClick={() => history.push("/Projects/" + id + "/edit")}
+            >
               Manage
             </Button>
           ) : (
@@ -68,13 +81,33 @@ const ProjectPage = ({
               ></Icon>
             )
           ) : (
-            <Icon
-              onClick={e => {
-                e.preventDefault();
-                alert("You must be signed in to use this!");
-              }}
-              name="star outline"
-            />
+            <>
+              <Icon
+                onClick={e => {
+                  e.stopPropagation();
+                  setOpenModal(true);
+                }}
+                name="star outline"
+              />
+              <Modal open={openModal} basic size="small" color="green">
+                <Header icon="browser">Error!</Header>
+                <Modal.Content>
+                  <h3>You must be signed in to use this!</h3>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button
+                    color="green"
+                    onClick={e => {
+                      e.stopPropagation();
+                      setOpenModal(false);
+                    }}
+                    inverted
+                  >
+                    <Icon name="checkmark" /> Ok!
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+            </>
           )}
           {projectLikes.length}
 
@@ -82,7 +115,9 @@ const ProjectPage = ({
           <h3>Made with {project.technologies_used}</h3>
           <p>{project.description}</p>
           {project.github_link ? (
-            <Button href={project.github_link}>View On Github!</Button>
+            <Button href={project.github_link} primary>
+              View On Github!
+            </Button>
           ) : (
             ""
           )}
@@ -93,7 +128,7 @@ const ProjectPage = ({
                 {project.collaborator_size_limit}
               </Button>
             ) : (
-              <Button onClick={joinProject}>
+              <Button onClick={joinProject} primary>
                 Join Project - {collabarators.length}/
                 {project.collaborator_size_limit}
               </Button>

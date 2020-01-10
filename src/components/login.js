@@ -54,7 +54,9 @@ const Login = ({ setUser }) => {
         onChange={e => setLoginPasswordField(e.target.value)}
       />
 
-      <Button type="submit">Log In</Button>
+      <Button primary type="submit">
+        Log In
+      </Button>
     </Form>
   );
 };
