@@ -1,5 +1,5 @@
 import React from "react";
-import Signup from "../components/Signup";
+import Signup from "../components/signup";
 import { Segment } from "semantic-ui-react";
 
 const SignupPage = ({ setUser, setLoading }) => {
