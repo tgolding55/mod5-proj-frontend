@@ -1,8 +1,8 @@
-const API_ENDPOINT = "http://10.218.2.29:3001/api/v1/";
+const API_ENDPOINT = "http://165.22.123.91:3001/api/v1/";
 const USERS_ENDPOINT = API_ENDPOINT + "users";
 const LOGIN_ENDPOINT = API_ENDPOINT + "login";
 const VALIDATE_ENDPOINT = API_ENDPOINT + "validate";
-const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubAuth";
+const GITHUBAUTH_ENDPOINT = API_ENDPOINT + "githubA uth";
 const PROJECTS_ENDPOINT = API_ENDPOINT + "projects";
 const COMMENTS_ENDPOINT = API_ENDPOINT + "project_comments";
 const ME_ENDPOINT = API_ENDPOINT + "me";

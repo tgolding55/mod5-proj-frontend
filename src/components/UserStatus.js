@@ -26,7 +26,7 @@ const UserStatus = ({ setUser, setSelectedPage, user, history }) => {
             </Menu.Item>
           ) : (
             <Menu.Item>
-              <Button primary href="http://localhost:3001/auth/github">
+              <Button primary href="http://165.22.123.91:3001/auth/github">
                 Link Github
               </Button>
             </Menu.Item>
